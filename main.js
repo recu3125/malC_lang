@@ -55,8 +55,8 @@ function convert() {
 
   //var
   input = input.replace(/(korvar[_0-9]+)(을|를) (만든다|정의한다|생성한다)/g, 'var $1')
-  input = input.replace(/(korvar[_0-9]+)(을|를) ([0-9]+)으로 (정의한다|생성한다)/g, 'var $1 = $2')
-  input = input.replace(/(korvar[_0-9]+)(을|를) ([0-9\+\-\*/]+)로 (정의한다|생성한다)/g, 'var $1 = $2')
+  input = input.replace(/(korvar[_0-9]+)(을|를) ([0-9]+)으로 (정의한다|생성한다)/g, 'var $1 = $3')
+  input = input.replace(/(korvar[_0-9]+)(을|를) ([0-9\+\-\*/]+)로 (정의한다|생성한다)/g, 'var $1 = $3')
 
   //set
   input = input.replace(/(korvar[_0-9]+)(을|를) ((korvar[_0-9]+)|[0-9\+\-\*/]+)으로 (정한다|만든다|둔다|바꾼다|설정한다)/g, '$1 = $3')
@@ -70,7 +70,12 @@ function convert() {
   //if
   input = input.replace(/만약/g, '')
   input = input.replace(/만약에/g, '')
-  input = input.replace(/([가-힣]+)가 참이라면/g, 'if ($1 == true){')
+  input = input.replace(/(korvar[_0-9]+)(이|가) 참이라면/g, 'if ($1 == true){')
+  input = input.replace(/(korvar[_0-9]+)(이|가) 거짓이라면/g, 'if ($1 == false){')
+  input = input.replace(/(korvar[_0-9]+)(이|가) 참이 아니라면/g, 'if ($1 == false){')
+  input = input.replace(/(korvar[_0-9]+)(이|가) 거짓이 아니라면/g, 'if ($1 == true){')
+  input = input.replace(/\./g, '}')
+  
 
 
 
