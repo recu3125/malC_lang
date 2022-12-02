@@ -2,7 +2,7 @@ function convert() {
   input = document.getElementById('in').value
 
   // 변수  (korvar[_0-9]+)
-  // 숫자  
+  // (korvar[_0-9]+|[0-9\+\-\*/]+)
 
 
   //변수빼놓기
@@ -10,7 +10,7 @@ function convert() {
     p1 = p1.split('')
     var josa = ['을', '를', '은', '는', '이', '가', '로', '으', '와', '과']
     if (josa.includes(p1.slice(-1).join())) {
-      return ('korvar_' + (p1.slice(0,-1).map(x => x.charCodeAt(0).toString())).join('_') + p1.slice(-1).join())
+      return ('korvar_' + (p1.slice(0, -1).map(x => x.charCodeAt(0).toString())).join('_') + p1.slice(-1).join())
     }
     return ('korvar_' + (p1.map(x => x.charCodeAt(0).toString())).join('_'))
   }
@@ -34,17 +34,17 @@ function convert() {
         else res += one * Math.pow(10, kor2.indexOf(kornum[i]) + 1)
       }
       if (kor3.indexOf(kornum[i]) != -1) {
-        res+=one
+        res += one
         res *= Math.pow(10000, kor3.indexOf(kornum[i]) + 1)
       }
       if (kor1.indexOf(kornum[i]) != -1) {
         one = kor1.indexOf(kornum[i]) + 1
       }
-      else{
-        one=0
+      else {
+        one = 0
       }
     }
-    return (res+one).toString()
+    return (res + one).toString()
   }
   input = input.replace(/숫자 ([일이삼사오육칠팔구십백천만억조영]+)/g, numreplacer)
 
@@ -68,16 +68,23 @@ function convert() {
 
 
   //if
-  input = input.replace(/만약/g, '')
-  input = input.replace(/만약에/g, '')
-  input = input.replace(/(korvar[_0-9]+)(이|가) 참이라면/g, 'if ($1 == true){')
-  input = input.replace(/(korvar[_0-9]+)(이|가) 거짓이라면/g, 'if ($1 == false){')
-  input = input.replace(/(korvar[_0-9]+)(이|가) 참이 아니라면/g, 'if ($1 == false){')
-  input = input.replace(/(korvar[_0-9]+)(이|가) 거짓이 아니라면/g, 'if ($1 == true){')
+  input = input.replace(/만약 */g, '')
+  input = input.replace(/만약에 */g, '')
+  input = input.replace(/(korvar[_0-9]+|[0-9\+\-\*/]+)(이|가|와|과) ((korvar[_0-9]+)|[0-9\+\-\*/]+)(이|가|와|과) (똑|)같(다|으)면/g, 'if ($1 == $3){')
+  input = input.replace(/(korvar[_0-9]+|[0-9\+\-\*/]+)(이|가) ((korvar[_0-9]+)|[0-9\+\-\*/]+)(|이)라면/g, 'if ($1 == $3){')
+  input = input.replace(/(korvar[_0-9]+|[0-9\+\-\*/]+)(이|가|와|과) ((korvar[_0-9]+)|[0-9\+\-\*/]+)(이|가|와|과) (다르|같지 않)(다|으)면/g, 'if ($1 != $3){')
+  input = input.replace(/(korvar[_0-9]+|[0-9\+\-\*/]+)(이|가) ((korvar[_0-9]+)|[0-9\+\-\*/]+)(|이)아니(|라)면/g, 'if ($1 != $3){')
+
+  //print(beta)
+  input = input.replace(/(korvar[_0-9]+|[0-9\+\-\*/]+)(을|를) 출력한다/g, 'alert($1)')
+
   input = input.replace(/\./g, '}')
-  
 
 
 
   document.getElementById('out').value = input
+}
+
+function run() {
+  eval(document.getElementById('out').value)
 }
