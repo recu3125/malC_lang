@@ -1,3 +1,4 @@
+code = ''
 function convert() {
   input = document.getElementById('in').value
 
@@ -98,12 +99,12 @@ function convert() {
     input = input.replace(/}\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 곱한다/g, '\n$1*=$5} ')
     input = input.replace(/}\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를|으로|로) 나눈다/g, '\n$1/=$5} ')
     //출력
-    input = input.replace(/}\n([가-힣 !?,.]+) 이라고 출력한다/g, '\nalert(\'$1\')} ')
-    input = input.replace(/}\n([가-힣 !?,.]+) 이라 출력한다/g, '\nalert(\'$1\')} ')
-    input = input.replace(/}\n([가-힣 !?,.]+) 라고 출력한다/g, '\nalert(\'$1\')} ')
-    input = input.replace(/}\n([가-힣 !?,.]+) 라 출력한다/g, '\nalert(\'$1\')} ')
-    input = input.replace(/}\n([가-힣 !?,.]+) 고 출력한다/g, '\nalert(\'$1\')} ')
-    input = input.replace(/}\n([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력한다/g, '\nalert($1)} ')
+    input = input.replace(/}\n([가-힣 !?,.]+) 이라고 출력한다/g, '\ndocument.getElementById(\'out\').value += \'$1\'} ')
+    input = input.replace(/}\n([가-힣 !?,.]+) 이라 출력한다/g, '\ndocument.getElementById(\'out\').value += \'$1\'} ')
+    input = input.replace(/}\n([가-힣 !?,.]+) 라고 출력한다/g, '\ndocument.getElementById(\'out\').value += \'$1\'} ')
+    input = input.replace(/}\n([가-힣 !?,.]+) 라 출력한다/g, '\ndocument.getElementById(\'out\').value += \'$1\'} ')
+    input = input.replace(/}\n([가-힣 !?,.]+) 고 출력한다/g, '\ndocument.getElementById(\'out\').value += \'$1\'} ')
+    input = input.replace(/}\n([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력한다/g, '\ndocument.getElementById(\'out\').value += $1.toString()} ')
 
     //중괄호 연장
     //var
@@ -120,12 +121,12 @@ function convert() {
     input = input.replace(/}\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 곱하고/g, '\n$1*=$5}')
     input = input.replace(/}\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를|으로|로) 나누고/g, '\n$1/=$5}')
     //출력
-    input = input.replace(/}\n([가-힣 !?,.]+) 이라고 출력하고/g, '\nalert(\'$1\')}')
-    input = input.replace(/}\n([가-힣 !?,.]+) 이라 출력하고/g, '\nalert(\'$1\')}')
-    input = input.replace(/}\n([가-힣 !?,.]+) 라고 출력하고/g, '\nalert(\'$1\')}')
-    input = input.replace(/}\n([가-힣 !?,.]+) 라 출력하고/g, '\nalert(\'$1\')}')
-    input = input.replace(/}\n([가-힣 !?,.]+) 고 출력하고/g, '\nalert(\'$1\')}')
-    input = input.replace(/}\n([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력하고/g, '\nalert($1)}')
+    input = input.replace(/}\n([가-힣 !?,.]+) 이라고 출력하고/g, '\ndocument.getElementById(\'out\').value += \'$1\'}')
+    input = input.replace(/}\n([가-힣 !?,.]+) 이라 출력하고/g, '\ndocument.getElementById(\'out\').value += \'$1\'}')
+    input = input.replace(/}\n([가-힣 !?,.]+) 라고 출력하고/g, '\ndocument.getElementById(\'out\').value += \'$1\'}')
+    input = input.replace(/}\n([가-힣 !?,.]+) 라 출력하고/g, '\ndocument.getElementById(\'out\').value += \'$1\'}')
+    input = input.replace(/}\n([가-힣 !?,.]+) 고 출력하고/g, '\ndocument.getElementById(\'out\').value += \'$1\'}')
+    input = input.replace(/}\n([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력하고/g, '\ndocument.getElementById(\'out\').value += $1.toString()}')
   }
 
   //중괄호 없음
@@ -143,22 +144,47 @@ function convert() {
   input = input.replace(/(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 곱한다/g, '$1*=$5')
   input = input.replace(/(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를|으로|로) 나눈다/g, '$1/=$5')
   //출력
-  input = input.replace(/([가-힣 !?,.]+) 이라고 출력한다/g, 'alert(\'$1\')')
-  input = input.replace(/([가-힣 !?,.]+) 이라 출력한다/g, 'alert(\'$1\')')
-  input = input.replace(/([가-힣 !?,.]+) 라고 출력한다/g, 'alert(\'$1\')')
-  input = input.replace(/([가-힣 !?,.]+) 라 출력한다/g, 'alert(\'$1\')')
-  input = input.replace(/([가-힣 !?,.]+) 고 출력한다/g, 'alert(\'$1\')')
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력한다/g, 'alert($1)')
+  input = input.replace(/([가-힣 !?,.]+) 이라고 출력한다/g, 'document.getElementById(\'out\').value += \'$1\'')
+  input = input.replace(/([가-힣 !?,.]+) 이라 출력한다/g, 'document.getElementById(\'out\').value += \'$1\'')
+  input = input.replace(/([가-힣 !?,.]+) 라고 출력한다/g, 'document.getElementById(\'out\').value += \'$1\'')
+  input = input.replace(/([가-힣 !?,.]+) 라 출력한다/g, 'document.getElementById(\'out\').value += \'$1\'')
+  input = input.replace(/([가-힣 !?,.]+) 고 출력한다/g, 'document.getElementById(\'out\').value += \'$1\'')
+  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력한다/g, 'document.getElementById(\'out\').value += $1.toString()')
+  input = input.replace(/줄을 바꾼다/g, 'document.getElementById(\'out\').value += \'\\n\'')
+
 
   //for
 
+  //input
 
-
-
-  document.getElementById('out').value = input
+  
+  code = input
 }
 
 function run() {
-  eval(document.getElementById('out').value)
-  //TODO error linenum
+  var haserror = false
+  const regex = new RegExp('[가-힣ㄱ-ㅎ]');
+  byline = code.split('\n')
+  for (i = 0; i < byline.length; i++) {
+    if (!byline[i].startsWith('document')&&regex.test(byline[i])) {
+      document.getElementById('out').value = (i + 1).toString() + '번째 줄이 문법에 어긋납니다!'
+      haserror = true
+      break
+    }
+  }
+  if (!haserror) {
+    document.getElementById('out').value = ''
+    try {
+      eval(code);
+    } catch (e) {
+      output = ''
+      function errreplacer(match, p1, offset, string) {
+        p1 = p1.split('_').slice(1)
+        console.log(p1)
+        return ('변수 ' + p1.map(x=>String.fromCharCode(x)).join('').toString() + '가 정의되지 않았습니다!')
+      }
+      output = e.message.toString().replace(/korvar(.+) is not defined/g, errreplacer)
+      document.getElementById('out').value = output
+    }
+  }
 }
