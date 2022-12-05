@@ -105,6 +105,7 @@ function convert() {
     input = input.replace(/}\n([가-힣 !?,.]+) 라 출력한다/g, '\ndocument.getElementById(\'out\').value += \'$1\'} ')
     input = input.replace(/}\n([가-힣 !?,.]+) 고 출력한다/g, '\ndocument.getElementById(\'out\').value += \'$1\'} ')
     input = input.replace(/}\n([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력한다/g, '\ndocument.getElementById(\'out\').value += $1.toString()} ')
+    input = input.replace(/}\n줄을 바꾼다/g, '\ndocument.getElementById(\'out\').value += \'\\n\'} ')
 
     //중괄호 연장
     //var
@@ -127,6 +128,7 @@ function convert() {
     input = input.replace(/}\n([가-힣 !?,.]+) 라 출력하고/g, '\ndocument.getElementById(\'out\').value += \'$1\'}')
     input = input.replace(/}\n([가-힣 !?,.]+) 고 출력하고/g, '\ndocument.getElementById(\'out\').value += \'$1\'}')
     input = input.replace(/}\n([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력하고/g, '\ndocument.getElementById(\'out\').value += $1.toString()}')
+    input = input.replace(/}\n줄을 바꾸고/g, '\ndocument.getElementById(\'out\').value += \'\\n\'}')
   }
 
   //중괄호 없음
