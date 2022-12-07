@@ -1,4 +1,3 @@
-code = ''
 function convert() {
   input = document.getElementById('in').value
 
@@ -46,7 +45,7 @@ function convert() {
 
 
   //basic +-*/
-  var preinput
+  let preinput
   while (input != preinput) {
     preinput = input
     input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) 더하기 ([0-9\+\-\*/_korvar\(\)]+) /g, '$1+$2 ')
@@ -81,7 +80,7 @@ function convert() {
   //else
   input = input.replace(/아니라면/g, 'else{}')
 
-  var preinput
+  preinput = ''
   while (input != preinput) {
     preinput = input
     //중괄호 끝맺음
@@ -154,39 +153,79 @@ function convert() {
   input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력한다/g, 'document.getElementById(\'out\').value += $1.toString()')
   input = input.replace(/줄을 바꾼다/g, 'document.getElementById(\'out\').value += \'\\n\'')
 
+  console.log(input)
 
   //for
 
   //input
 
-  
-  code = input
+
+  return input
 }
 
 function run() {
-  var haserror = false
-  const regex = new RegExp('[가-힣ㄱ-ㅎ]');
-  byline = code.split('\n')
-  for (i = 0; i < byline.length; i++) {
-    if (!byline[i].startsWith('document')&&regex.test(byline[i])) {
-      document.getElementById('out').value = (i + 1).toString() + '번째 줄이 문법에 어긋납니다!'
-      haserror = true
-      break
-    }
-  }
   if (!haserror) {
     document.getElementById('out').value = ''
     try {
-      eval(code);
+      eval(convert());
     } catch (e) {
       output = ''
       function errreplacer(match, p1, offset, string) {
         p1 = p1.split('_').slice(1)
-        console.log(p1)
-        return ('변수 ' + p1.map(x=>String.fromCharCode(x)).join('').toString() + '가 정의되지 않았습니다!')
+        return ('변수 ' + p1.map(x => String.fromCharCode(x)).join('').toString() + '가 정의되지 않았습니다!')
       }
       output = e.message.toString().replace(/korvar(.+) is not defined/g, errreplacer)
       document.getElementById('out').value = output
     }
   }
 }
+var haserror = false
+function livecheck(){
+  haserror = false
+  let code = convert()
+  let input = document.getElementById('in').value
+  const regex2 = new RegExp('[^ 가-힣\?!\.,\n]');
+  byline2 = input.split('\n')
+  for (i = 0; i < byline2.length; i++) {
+    if (regex2.test(byline2[i])) {
+      document.getElementById('run').innerHTML = (i + 1).toString() + '번째 줄이 문법에 어긋납니다..'
+      document.getElementById('in').style.color = '#FF8888'
+      document.getElementById('run').style.color = '#FF8888'
+      document.getElementById('run').style.outline = '2px dotted #FF8888'
+      haserror = true
+      return
+    }
+  }
+  const regex = new RegExp('[가-힣ㄱ-ㅎ]');
+  byline = code.split('\n')
+  for (i = 0; i < byline.length; i++) {
+    if ( regex.test(byline[i].replace(/document\.getElementById\('out'\)\.value \+= '[가-힣ㄱ-ㅎ\?!\., ]*'/g,''))) {
+      document.getElementById('run').innerHTML = (i + 1).toString() + '번째 줄이 문법에 어긋납니다..'
+      document.getElementById('in').style.color = '#FF8888'
+      document.getElementById('run').style.color = '#FF8888'
+      document.getElementById('run').style.outline = '2px dotted #FF8888'
+      haserror = true
+      return
+    }
+  }
+  document.getElementById('run').innerHTML ='실행!'
+  document.getElementById('run').style.color = '#AAFFAA'
+  document.getElementById('run').style.outline = '2px dotted #AAFFAA'
+  document.getElementById('in').style.color = '#AAFFAA'
+}
+
+// let prev = ''
+// function editor() {
+//   let now = document.getElementById('in').value
+//   len = now.length
+//   prevlen = prev.length
+//   if (len < prevlen || len > prevlen+1) {
+//     return
+//   }
+//   for (i = 0; i < prevlen; i++) {
+//     if(now[nowlen-i-1]!=prev[prevlen-i-1]){
+//       //달라진부분
+//     }
+//   }
+//     prev = document.getElementById('in').value
+// }
