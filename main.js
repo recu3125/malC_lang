@@ -63,6 +63,24 @@ function convert() {
   //if
   input = input.replace(/만약 */g, '')
   input = input.replace(/만약에 */g, '')
+  input = input.replace(/그것도 */g, '')
+
+  //else if
+  //같다
+  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (똑|)같(다|으)면/g, 'else if ($2 == $4){}')
+  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 이|이)라면/g, 'else if ($2 == $4){}')
+  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (다르|같지 않)(다|으)면/g, 'else if ($2 != $4){}')
+  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 이|이)아니(|라)면/g, 'else if ($2 != $4){}')
+
+  //부등식
+  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크(다|)면/g, 'else if ($2 > $4){}')
+  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작(다|)면/g, 'else if ($2 < $4){}')
+  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크지 않(다|으)면/g, 'else if ($2 <= $4){}')
+  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작지 않(다|으)면/g, 'else if ($2 >= $4){}')
+  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크거나 같(다|)면/g, 'else if ($2 >= $4){}')
+  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작거나 같(다|)면/g, 'else if ($2 <= $4){}')
+  
+  //if
   //같다
   input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (똑|)같(다|으)면/g, 'if ($1 == $3){}')
   input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 이|이)라면/g, 'if ($1 == $3){}')
@@ -76,6 +94,7 @@ function convert() {
   input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작지 않(다|으)면/g, 'if ($1 >= $3){}')
   input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크거나 같(다|)면/g, 'if ($1 >= $3){}')
   input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작거나 같(다|)면/g, 'if ($1 <= $3){}')
+
 
   //else
   input = input.replace(/아니라면/g, 'else{}')
@@ -153,12 +172,16 @@ function convert() {
   input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력한다/g, 'document.getElementById(\'out\').value += $1.toString()')
   input = input.replace(/줄을 바꾼다/g, 'document.getElementById(\'out\').value += \'\\n\'')
 
-  console.log(input)
-
   //for
 
   //input
+  console.log(input)
+  input = input.replace(/(korvar[_0-9]+) (을|를|에)(다|)(가|) ([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) 입력(을 |)받는다/g, '$1 = prompt("$5", "")*1')
+  input = input.replace(/([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) (korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받는다/g, '$3 = prompt("$1", "")*1')
+  input = input.replace(/(korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받는다/g, '$1 = prompt("입력 : ", "")*1')
+  console.log(input)
 
+  //string
 
   return input
 }
@@ -199,7 +222,7 @@ function livecheck(){
   const regex = new RegExp('[가-힣ㄱ-ㅎ]');
   byline = code.split('\n')
   for (i = 0; i < byline.length; i++) {
-    if ( regex.test(byline[i].replace(/document\.getElementById\('out'\)\.value \+= '[가-힣ㄱ-ㅎ\?!\., ]*'/g,''))) {
+    if ( regex.test(byline[i].replace(/document.*'/g,'').replace(/prompt.*\)/g,''))) {
       document.getElementById('run').innerHTML = (i + 1).toString() + '번째 줄이 문법에 어긋납니다..'
       document.getElementById('in').style.color = '#FF8888'
       document.getElementById('run').style.color = '#FF8888'
