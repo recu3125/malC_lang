@@ -10,34 +10,16 @@
   <link href="https://lonekorean.github.io/highlight-within-textarea/jquery.highlight-within-textarea.css" rel="stylesheet">
   <script src="https://lonekorean.github.io/highlight-within-textarea/jquery.highlight-within-textarea.js"></script>
   <script type="text/javascript" src="./main.js"></script>
-  <style>
-    mark.red {
-      background-color: #00000000;
-      color: #FF8888 !important;
-    }
-
-    mark.green {
-      background-color: #00000000;
-      color: #AAFFAA !important;
-    }
-
-    .hwt-container {
-      background-color: #333344
-    }
-
-    textarea{
-      resize: none;
-    }
-  </style>
+  <link href="./index.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <body style="background-color: #151525;" onload="loaded()">
   <div style="height: 90vh; width: 7vw; float: left;">
   </div>
-  <button id="run" style="background-color: #333344; color: #AAFFAA; width:81vw; height: 25px; text-align: center; outline: 2px dotted #AAFFAA; margin: 3px;" onclick="run()">실행!</button>
+  <button id="run" onclick="run()">실행!</button>
   <br>
-  <textarea id="in" spellcheck="false" style="width: 60vw; height: 90vh; background-color: #222233; color: #00000000; caret-color:#FFF" placeholder="여기는 코드를 입력하는 곳" oninput="livecheck()"></textarea>
-  <textarea id="out" readonly spellcheck="false" style="width: 20vw; height: 90vh; background-color: #222233; color: azure;" placeholder="여기는 출력값 혹은 에러가 나오는 곳"></textarea>
+  <textarea id="in" spellcheck="false" placeholder="여기는 코드를 입력하는 곳" oninput="livecheck()"></textarea>
+  <textarea id="out" readonly spellcheck="false" placeholder="여기는 출력값 혹은 에러가 나오는 곳"></textarea>
 </body>
 
 </html>

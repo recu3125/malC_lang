@@ -1,0 +1,42 @@
+#run {
+  background-color: #333344;
+  color: #AAFFAA;
+  width: 81vw;
+  height: 25px;
+  text-align: center;
+  outline: 2px dotted #AAFFAA;
+  margin: 3px;
+}
+
+#in {
+  width: 60vw;
+  height: 90vh;
+  background-color: #222233;
+  color: #00000000;
+  caret-color: #FFF
+}
+
+#out {
+  width: 20vw;
+  height: 90vh;
+  background-color: #222233;
+  color: azure;
+}
+
+mark.red {
+  background-color: #00000000;
+  color: #FF8888 !important;
+}
+
+mark.green {
+  background-color: #00000000;
+  color: #AAFFAA !important;
+}
+
+.hwt-container {
+  background-color: #333344
+}
+
+textarea {
+  resize: none;
+}
