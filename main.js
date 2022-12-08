@@ -1,5 +1,5 @@
 function convert() {
-  input = document.getElementById('in').value
+  input = document.getElementsByClassName("hwt-highlights hwt-content")[0].innertext||document.getElementsByClassName("hwt-highlights hwt-content")[0].textContent
 
   // 변수  (korvar[_0-9]+) 
   // ([0-9\+\-\*/_korvar\(\)]+) 
@@ -79,7 +79,7 @@ function convert() {
   input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작지 않(다|으)면/g, 'else if ($2 >= $4){}')
   input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크거나 같(다|)면/g, 'else if ($2 >= $4){}')
   input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작거나 같(다|)면/g, 'else if ($2 <= $4){}')
-  
+
   //if
   //같다
   input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (똑|)같(다|으)면/g, 'if ($1 == $3){}')
@@ -175,11 +175,9 @@ function convert() {
   //for
 
   //input
-  console.log(input)
   input = input.replace(/(korvar[_0-9]+) (을|를|에)(다|)(가|) ([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) 입력(을 |)받는다/g, '$1 = prompt("$5", "")*1')
   input = input.replace(/([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) (korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받는다/g, '$3 = prompt("$1", "")*1')
   input = input.replace(/(korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받는다/g, '$1 = prompt("입력 : ", "")*1')
-  console.log(input)
 
   //string
 
@@ -202,39 +200,87 @@ function run() {
     }
   }
 }
+var errlines = []
+var noerrlines = []
+function loaded() {
+  $('#in').highlightWithinTextarea({
+    highlight: [
+      {
+        highlight: errlinecheck,
+        className: 'red'
+      },
+      {
+        highlight: noerrlinecheck,
+        className: 'green'
+      }
+    ]
+  });
+
+}
 var haserror = false
-function livecheck(){
-  haserror = false
-  let code = convert()
-  let input = document.getElementById('in').value
-  const regex2 = new RegExp('[^ 가-힣\?!\.,\n]');
-  byline2 = input.split('\n')
-  for (i = 0; i < byline2.length; i++) {
-    if (regex2.test(byline2[i])) {
-      document.getElementById('run').innerHTML = (i + 1).toString() + '번째 줄이 문법에 어긋납니다..'
-      document.getElementById('in').style.color = '#FF8888'
-      document.getElementById('run').style.color = '#FF8888'
-      document.getElementById('run').style.outline = '2px dotted #FF8888'
-      haserror = true
-      return
-    }
-  }
-  const regex = new RegExp('[가-힣ㄱ-ㅎ]');
-  byline = code.split('\n')
-  for (i = 0; i < byline.length; i++) {
-    if ( regex.test(byline[i].replace(/document.*'/g,'').replace(/prompt.*\)/g,''))) {
-      document.getElementById('run').innerHTML = (i + 1).toString() + '번째 줄이 문법에 어긋납니다..'
-      document.getElementById('in').style.color = '#FF8888'
-      document.getElementById('run').style.color = '#FF8888'
-      document.getElementById('run').style.outline = '2px dotted #FF8888'
-      haserror = true
-      return
-    }
-  }
-  document.getElementById('run').innerHTML ='실행!'
+function livecheck() {
+  $('#in').highlightWithinTextarea('update');
+  document.getElementById('run').innerHTML = '실행!'
   document.getElementById('run').style.color = '#AAFFAA'
   document.getElementById('run').style.outline = '2px dotted #AAFFAA'
-  document.getElementById('in').style.color = '#AAFFAA'
+  haserror = false
+  let code = convert()
+  let input = document.getElementsByClassName("hwt-highlights hwt-content")[0].innertext||document.getElementsByClassName("hwt-highlights hwt-content")[0].textContent
+  byline2 = input.split('\n')
+  for (i = 0; i < byline2.length; i++) {
+    if (/[^ 가-힣\?!\.,\n]/.test(byline2[i])) {
+      document.getElementById('run').innerHTML = (i + 1).toString() + '번째 줄이 문법에 어긋납니다..'
+      document.getElementById('run').style.color = '#FF8888'
+      document.getElementById('run').style.outline = '2px dotted #FF8888'
+      haserror = true
+    }
+  }
+  byline = code.split('\n')
+  for (i = 0; i < byline.length; i++) {
+    if (/[가-힣ㄱ-ㅎ]/.test(byline[i].replace(/document.*'/g, '').replace(/prompt.*\)/g, ''))) {
+      document.getElementById('run').innerHTML = (i + 1).toString() + '번째 줄이 문법에 어긋납니다..'
+      document.getElementById('run').style.color = '#FF8888'
+      document.getElementById('run').style.outline = '2px dotted #FF8888'
+      haserror = true
+    }
+  }
+}
+
+function errlinecheck(){
+  let code = convert()
+  let input = document.getElementById('in').value
+  byline2 = input.split('\n')
+  errlines = []
+  for (i = 0; i < byline2.length; i++) {
+    if (/[^ 가-힣\?!\.,\n]/.test(byline2[i])) {
+      errlines.push(byline2[i])
+    }
+  }
+  byline = code.split('\n')
+  for (i = 0; i < byline.length; i++) {
+    if (/[가-힣ㄱ-ㅎ]/.test(byline[i].replace(/document.*'/g, '').replace(/prompt.*\)/g, ''))) {
+      errlines.push(byline2[i])
+    }
+  }
+  return errlines.map(x=>new RegExp('^'+x.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&')+'$', 'm'))
+}
+function noerrlinecheck(){
+  let code = convert()
+  let input = document.getElementById('in').value
+  byline2 = input.split('\n')
+  noerrlines = JSON.parse(JSON.stringify(byline2))
+  for (i = 0; i < byline2.length; i++) {
+    if (/[^ 가-힣\?!\.,\n]/.test(byline2[i])) {
+      noerrlines = noerrlines.filter(x=>x!=byline2[i])
+    }
+  }
+  byline = code.split('\n')
+  for (i = 0; i < byline.length; i++) {
+    if (/[가-힣ㄱ-ㅎ]/.test(byline[i].replace(/document.*'/g, '').replace(/prompt.*\)/g, ''))) {
+      noerrlines = noerrlines.filter(x=>x!=byline2[i])
+    }
+  }
+  return noerrlines.map(x=>new RegExp('^'+x.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&')+'$', 'm'))
 }
 
 // let prev = ''
