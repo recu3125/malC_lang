@@ -61,8 +61,8 @@ function convert() {
     input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (와|과|에)(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를|로|으로) 나눈 (거|것)/g, '($1+$6)')
   }
   //if
-  input = input.replace(/만약 */g, '')
   input = input.replace(/만약에 */g, '')
+  input = input.replace(/만약 */g, '')
   input = input.replace(/그것도 */g, '')
 
   //else if
@@ -136,7 +136,7 @@ function convert() {
     input = input.replace(/}\n([가-힣 !?,.]+) 라 출력한다/g, '\ndocument.getElementById(\'out\').value += \'$1\'} ')
     input = input.replace(/}\n([가-힣 !?,.]+) 고 출력한다/g, '\ndocument.getElementById(\'out\').value += \'$1\'} ')
     input = input.replace(/}\n([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력한다/g, '\ndocument.getElementById(\'out\').value += $1.toString()} ')
-    input = input.replace(/}\n줄을 바꾼다/g, '\ndocument.getElementById(\'out\').value += \'\\n\'} ')
+    input = input.replace(/}\n줄( |)을 바꾼다/g, '\ndocument.getElementById(\'out\').value += \'\\n\'} ')
     //입력
     input = input.replace(/}\n(korvar[_0-9]+) (을|를|에)(다|)(가|) ([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) 입력(을 |)받는다/g, '\n$1 = prompt("$5", "")*1} ')
     input = input.replace(/}\n([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) (korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받는다/g, '\n$3 = prompt("$1", "")*1} ')
@@ -163,7 +163,7 @@ function convert() {
     input = input.replace(/}\n([가-힣 !?,.]+) 라 출력하고/g, '\ndocument.getElementById(\'out\').value += \'$1\'}')
     input = input.replace(/}\n([가-힣 !?,.]+) 고 출력하고/g, '\ndocument.getElementById(\'out\').value += \'$1\'}')
     input = input.replace(/}\n([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력하고/g, '\ndocument.getElementById(\'out\').value += $1.toString()}')
-    input = input.replace(/}\n줄을 바꾸고/g, '\ndocument.getElementById(\'out\').value += \'\\n\'}')
+    input = input.replace(/}\n줄( |)을 바꾸고/g, '\ndocument.getElementById(\'out\').value += \'\\n\'}')
     //입력
     input = input.replace(/}\n(korvar[_0-9]+) (을|를|에)(다|)(가|) ([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) 입력(을 |)받고/g, '\n$1 = prompt("$5", "")*1}')
     input = input.replace(/}\n([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) (korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받고/g, '\n$3 = prompt("$1", "")*1}')
@@ -190,7 +190,7 @@ function convert() {
   input = input.replace(/([가-힣 !?,.]+) 라 출력한다/g, 'document.getElementById(\'out\').value += \'$1\'')
   input = input.replace(/([가-힣 !?,.]+) 고 출력한다/g, 'document.getElementById(\'out\').value += \'$1\'')
   input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력한다/g, 'document.getElementById(\'out\').value += $1.toString()')
-  input = input.replace(/줄을 바꾼다/g, 'document.getElementById(\'out\').value += \'\\n\'')
+  input = input.replace(/줄( |)을 바꾼다/g, 'document.getElementById(\'out\').value += \'\\n\'')
 
   //입력
   input = input.replace(/(korvar[_0-9]+) (을|를|에)(다|)(가|) ([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) 입력(을 |)받는다/g, '$1 = prompt("$5", "")*1')
@@ -228,11 +228,29 @@ function loaded() {
   $('#in').highlightWithinTextarea({
     highlight: [
       {
-        highlight: errlinecheck,
-        className: 'red'
+        highlight: [/변수 [가-힣]+ /g, /숫자 [가-힣]+ /g],
+        className: 'varornum'
       },
       {
-        highlight: noerrlinecheck,
+        highlight: [/[가-힣]+다$/mg, /[가-힣]+고$/mg],
+        className: 'pink'
+      },
+      {
+        highlight: /[가-힣 !?,.]+(면|동안)$/gm,
+        className: 'ifwhile'
+      },
+      {
+        highlight: [/^[가-힣 !?,.]+ (?=((이|)라고) 출력)/mg,
+          /^((?!변수 [가-힣]+).)+ [가-힣 !?,.]* (?=(라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어))/mg,
+          /(?<=(을|를|에)[가-힣]* )[가-힣 !?,.]+ (?=(라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어))/mg],
+        className: 'string'
+      },
+      {
+        highlight: errlinecheck,
+        className: 'err'
+      },
+      {
+        highlight: /^[가-힣ㄱ-ㅎㅏ-ㅣ !?,.]+$/gm,
         className: 'green'
       }
     ]
@@ -244,8 +262,8 @@ var haserror = false
 function livecheck() {
   $('#in').highlightWithinTextarea('update');
   document.getElementById('run').innerHTML = '실행!'
-  document.getElementById('run').style.color = '#AAFFAA'
-  document.getElementById('run').style.outline = '2px dotted #AAFFAA'
+  document.getElementById('run').style.color = '#00b57e'
+  document.getElementById('run').style.outline = '2px dotted #00b57e'
   haserror = false
   let code = convert()
   let input = document.getElementsByClassName("hwt-highlights hwt-content")[0].innertext || document.getElementsByClassName("hwt-highlights hwt-content")[0].textContent
@@ -276,40 +294,53 @@ function errlinecheck() {
   errlines = []
   for (i = 0; i < byline2.length; i++) {
     if (/[^ 가-힣\?!\.,\n]/.test(byline2[i])) {
-      errlines.push(byline2[i])
+      if (i == 0) {
+        errlines.push("A" + byline2[i])
+      }
+      else {
+        errlines.push(byline2[i - 1] + '\nA' + byline2[i])
+      }
     }
   }
   byline = code.split('\n')
   for (i = 0; i < byline.length; i++) {
     if (/[가-힣ㄱ-ㅎ]/.test(byline[i].replace(/document.*'/g, '').replace(/prompt.*\)/g, ''))) {
-      errlines.push(byline2[i])
+      if (i == 0) {
+        errlines.push("A" + byline2[i])
+      }
+      else {
+        errlines.push(byline2[i - 1] + '\nA' + byline2[i])
+      }
     }
   }
   // console.log(errlines.map(x => new RegExp('^' + x.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&') + '$', 'm')))
   // console.log(code)
   errlines = [...new Set(errlines)]
-  console.log(document.getElementsByClassName("hwt-highlights hwt-content")[0].innerHTML)
-  return errlines.map(x => new RegExp('^' + x.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&') + '$', 'mg'))
+  // console.log(document.getElementsByClassName("hwt-highlights hwt-content")[0].innerHTML)
+  errlines = errlines.map(x => new RegExp('(?<=' + x.split('A')[0].replace(/[|\\{}()[\]^$+*?.]/g, '\\$&') + ')^' + x.split('A')[1].replace(/[|\\{}()[\]^$+*?.]/g, '\\$&') + '$', 'mg'))
+  // 
+  console.log(errlines)
+  return errlines
 }
-function noerrlinecheck() {
-  let code = convert()
-  let input = document.getElementsByClassName("hwt-highlights hwt-content")[0].innertext || document.getElementsByClassName("hwt-highlights hwt-content")[0].textContent
-  byline2 = input.split('\n')
-  noerrlines = JSON.parse(JSON.stringify(byline2))
-  for (i = 0; i < byline2.length; i++) {
-    if (/[^ 가-힣\?!\.,\n]/.test(byline2[i])) {
-      noerrlines = noerrlines.filter(x => x != byline2[i])
-    }
-  }
-  byline = code.split('\n')
-  for (i = 0; i < byline.length; i++) {
-    if (/[가-힣ㄱ-ㅎ]/.test(byline[i].replace(/document.*'/g, '').replace(/prompt.*\)/g, ''))) {
-      noerrlines = noerrlines.filter(x => x != byline2[i])
-    }
-  }
-  noerrlines = noerrlines.filter(x => x != '')
-  return noerrlines.map(x => new RegExp('^' + x.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&') + '$', 'mg'))
-}
+// function noerrlinecheck() {
+//   let code = convert()
+//   let input = document.getElementsByClassName("hwt-highlights hwt-content")[0].innertext || document.getElementsByClassName("hwt-highlights hwt-content")[0].textContent
+//   byline2 = input.split('\n')
+//   noerrlines = JSON.parse(JSON.stringify(byline2))
+//   for (i = 0; i < byline2.length; i++) {
+//     if (/[^ 가-힣\?!\.,\n]/.test(byline2[i])) {
+//       noerrlines = noerrlines.filter(x => x != byline2[i])
+//     }
+//   }
+//   byline = code.split('\n')
+//   for (i = 0; i < byline.length; i++) {
+//     if (/[가-힣ㄱ-ㅎ]/.test(byline[i].replace(/document.*'/g, '').replace(/prompt.*\)/g, ''))) {
+//       noerrlines = noerrlines.filter(x => x != byline2[i])
+//     }
+//   }
+//   noerrlines = noerrlines.filter(x => x != '')
+//   return noerrlines.map(x => new RegExp('^' + x.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&') + '$', 'mg'))
+// }
 
 // let prev = ''
 // function editor() {

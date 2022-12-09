@@ -1,40 +1,82 @@
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  font-family: Pretendard-Regular;
+  font-size: 13pt;
+  font-weight:400;
+  background-color: #21252b;
+}
+
 #run {
   background-color: #333344;
-  color: #AAFFAA;
+  color: #00b57e;
   width: 81vw;
   height: 25px;
   text-align: center;
-  outline: 2px dotted #AAFFAA;
+  outline: 2px dotted #00b57e;
   margin: 3px;
+  font-family: Pretendard-Regular;
 }
 
 #in {
   width: 60vw;
   height: 90vh;
-  background-color: #222233;
+  background-color: #00000000;
   color: #00000000;
-  caret-color: #FFF
+  caret-color: #FFF;
+  font-family: Pretendard-Regular;
+  padding: 10px;
 }
 
 #out {
   width: 20vw;
   height: 90vh;
-  background-color: #222233;
+  background-color: #1b1d23;
   color: azure;
+  font-family: Pretendard-Regular;
 }
 
-mark.red {
+mark.err {
+  background-color: #c8053f55;
+}
+
+mark.pink {
   background-color: #00000000;
-  color: #FF8888 !important;
+  color: #d38ba1;
 }
 
 mark.green {
   background-color: #00000000;
-  color: #AAFFAA !important;
+  color: #CCCCCC !important;
+}
+
+mark.varornum {
+  background-color: #00000000;
+  color: #00b57e;
+}
+
+mark.string {
+  background-color: #00000000;
+  color: #6c88ce;
+}
+
+mark.ifwhile {
+  background-color: #00000000;
+  color: #cbc159;
 }
 
 .hwt-container {
-  background-color: #333344
+  background-color: #282c34;
+}
+
+.hwt-content {
+  font-size: 13pt;
+  padding: 10px;
 }
 
 textarea {
