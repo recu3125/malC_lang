@@ -8,17 +8,16 @@
 body {
   font-family: Pretendard-Regular;
   font-size: 13pt;
-  font-weight:400;
   background-color: #21252b;
 }
 
 #run {
   background-color: #333344;
-  color: #00b57e;
+  color: #4eb797;
   width: 81vw;
   height: 25px;
   text-align: center;
-  outline: 2px dotted #00b57e;
+  outline: 2px dotted #4eb797;
   margin: 3px;
   font-family: Pretendard-Regular;
 }
@@ -55,9 +54,14 @@ mark.green {
   color: #CCCCCC !important;
 }
 
-mark.varornum {
+mark.numvar {
   background-color: #00000000;
-  color: #00b57e;
+  color: #9676bf;
+}
+
+mark.numvarname {
+  background-color: #00000000;
+  color: #4eb797;
 }
 
 mark.string {

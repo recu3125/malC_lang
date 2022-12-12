@@ -40,11 +40,8 @@ function convert() {
     }
     return (res + one).toString()
   }
-  input = input.replace(/숫자 ([가-힣]+)/g, numreplacer)
-  input = input.replace(/숫자 ([영일이삼사오육칠팔구십백천만억조]+) /g, numreplacer)
+  input = input.replace(/숫자 ([영일이삼사오육칠팔구십백천만억조]+)/g, numreplacer)
 
-
-  //basic +-*/
   let preinput
   while (input != preinput) {
     preinput = input
@@ -60,150 +57,221 @@ function convert() {
     input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (와|과|에)(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) 의 곱/g, '($1*$6)')
     input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (와|과|에)(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를|로|으로) 나눈 (거|것)/g, '($1+$6)')
   }
+
   //if
   input = input.replace(/만약에 */g, '')
   input = input.replace(/만약 */g, '')
   input = input.replace(/그것도 */g, '')
 
-  //else if
-  //같다
-  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (똑|)같(다|으)면/g, 'else if ($2 == $4){}')
-  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 이|이)라면/g, 'else if ($2 == $4){}')
-  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (다르|같지 않)(다|으)면/g, 'else if ($2 != $4){}')
-  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 이|이)아니(|라)면/g, 'else if ($2 != $4){}')
-
-  //부등식
-  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크(다|)면/g, 'else if ($2 > $4){}')
-  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작(다|)면/g, 'else if ($2 < $4){}')
-  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크지 않(다|으)면/g, 'else if ($2 <= $4){}')
-  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작지 않(다|으)면/g, 'else if ($2 >= $4){}')
-  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크거나 같(다|)면/g, 'else if ($2 >= $4){}')
-  input = input.replace(/(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작거나 같(다|)면/g, 'else if ($2 <= $4){}')
-
-  //if
-  //같다
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (똑|)같(다|으)면/g, 'if ($1 == $3){}')
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 이|이)라면/g, 'if ($1 == $3){}')
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (다르|같지 않)(다|으)면/g, 'if ($1 != $3){}')
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 이|이)아니(|라)면/g, 'if ($1 != $3){}')
-
-  //부등식
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크(다|)면/g, 'if ($1 > $3){}')
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작(다|)면/g, 'if ($1 < $3){}')
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크지 않(다|으)면/g, 'if ($1 <= $3){}')
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작지 않(다|으)면/g, 'if ($1 >= $3){}')
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크거나 같(다|)면/g, 'if ($1 >= $3){}')
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작거나 같(다|)면/g, 'if ($1 <= $3){}')
 
 
-  //else
-  input = input.replace(/아니라면/g, 'else{}')
 
-  //while
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (똑|)같은 동안/g, 'while ($1 == $3){}')
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 인|인) 동안/g, 'while ($1 == $3){}')
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (다른|같지 않은) 동안/g, 'while ($1 != $3){}')
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 이|이)아닌 동안/g, 'while ($1 != $3){}')
-  //부등식
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)큰 동안/g, 'while ($1 > $3){}')
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작은 동안/g, 'while ($1 < $3){}')
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크지 않은 동안/g, 'while ($1 <= $3){}')
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작지 않은 동안/g, 'while ($1 >= $3){}')
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크거나 같은 동안/g, 'while ($1 >= $3){}')
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작거나 같은 동안/g, 'while ($1 <= $3){}')
+  let output = ''
+  input = input.split('\n')
+  for (let i = 0; i < input.length; i++) {
+    output += input[i] + '\n'
+    output = processstep(output)
+    console.log(output)
+  }
 
-  preinput = ''
-  while (input != preinput) {
-    preinput = input
+
+  function processstep(input) {
+
+
+
+    //if 인데...앞이 괄호닫힘이 아닐 때만
+    //else if
+    //같다
+    input = input.replace(/(?<=[^\}]\n)(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (똑|)같(다|으)면/, 'else if ($2 == $4){}')
+    input = input.replace(/(?<=[^\}]\n)(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 이|이)라면/, 'else if ($2 == $4){}')
+    input = input.replace(/(?<=[^\}]\n)(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (다르|같지 않)(다|으)면/, 'else if ($2 != $4){}')
+    input = input.replace(/(?<=[^\}]\n)(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 이|이)아니(|라)면/, 'else if ($2 != $4){}')
+
+    //부등식
+    input = input.replace(/(?<=[^\}]\n)(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크(다|)면/, 'else if ($2 > $4){}')
+    input = input.replace(/(?<=[^\}]\n)(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작(다|으)면/, 'else if ($2 < $4){}')
+    input = input.replace(/(?<=[^\}]\n)(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크지 않(다|으)면/, 'else if ($2 <= $4){}')
+    input = input.replace(/(?<=[^\}]\n)(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작지 않(다|으)면/, 'else if ($2 >= $4){}')
+    input = input.replace(/(?<=[^\}]\n)(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크거나 같(다|)면/, 'else if ($2 >= $4){}')
+    input = input.replace(/(?<=[^\}]\n)(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작거나 같(다|)면/, 'else if ($2 <= $4){}')
+
+    //if
+    //같다
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (똑|)같(다|으)면/, 'if ($1 == $3){}')
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 이|이)라면/, 'if ($1 == $3){}')
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (다르|같지 않)(다|으)면/, 'if ($1 != $3){}')
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 이|이)아니(|라)면/, 'if ($1 != $3){}')
+
+    //부등식
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크(다|)면/, 'if ($1 > $3){}')
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작(다|으)면/, 'if ($1 < $3){}')
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크지 않(다|으)면/, 'if ($1 <= $3){}')
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작지 않(다|으)면/, 'if ($1 >= $3){}')
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크거나 같(다|)면/, 'if ($1 >= $3){}')
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작거나 같(다|)면/, 'if ($1 <= $3){}')
+
+
+    //else
+    input = input.replace(/(?<=[^\}]\n)아니라면/, 'else{}')
+
+    //while
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (똑|)같은 동안/, 'while ($1 == $3){}')
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 인|인) 동안/, 'while ($1 == $3){}')
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (다른|같지 않은) 동안/, 'while ($1 != $3){}')
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 이|이)아닌 동안/, 'while ($1 != $3){}')
+    //부등식
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)큰 동안/, 'while ($1 > $3){}')
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작은 동안/, 'while ($1 < $3){}')
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크지 않은 동안/, 'while ($1 <= $3){}')
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작지 않은 동안/, 'while ($1 >= $3){}')
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크거나 같은 동안/, 'while ($1 >= $3){}')
+    input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작거나 같은 동안/, 'while ($1 <= $3){}')
+
+
     //중괄호 끝맺음
     //var
-    input = input.replace(/}\n(korvar[_0-9]+) (을|를) (만든다|정의한다|생성한다)/g, '\nvar $1} ')
-    input = input.replace(/}\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 으로 (정의한다|생성한다)/g, '\nvar $1 = $3} ')
-    input = input.replace(/}\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 로 (정의한다|생성한다)/g, '\nvar $1 = $3} ')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) (만든다|정의한다|생성한다)/g, '\nvar $2} $1')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 으로 (정의한다|생성한다)/g, '\nvar $2 = $4} $1')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 로 (정의한다|생성한다)/g, '\nvar $2 = $4} $1')
     //set
-    input = input.replace(/}\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 으로 (정한다|만든다|둔다|바꾼다|설정한다)/g, '\n$1 = $3} ')
-    input = input.replace(/}\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 로 (정한다|만든다|둔다|바꾼다|설정한다)/g, '\n$1 = $3} ')
-    input = input.replace(/}\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) (와|과) (같게 한다)/g, '\n$1 = $3} ')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 으로 (정한다|만든다|둔다|바꾼다|설정한다)/g, '\n$2 = $4} $1')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 로 (정한다|만든다|둔다|바꾼다|설정한다)/g, '\n$2 = $4} $1')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) (와|과) (같게 한다)/g, '\n$2 = $4} ')
     //+=, ++,...
-    input = input.replace(/}\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 더한다/g, '\n$1+=$5} ')
-    input = input.replace(/}\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 뺀다/g, '\n$1-=$5} ')
-    input = input.replace(/}\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 곱한다/g, '\n$1*=$5} ')
-    input = input.replace(/}\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를|으로|로) 나눈다/g, '\n$1/=$5} ')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 더한다/g, '\n$2+=$6} $1')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 뺀다/g, '\n$2-=$6} $1')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 곱한다/g, '\n$2*=$6} $1')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를|으로|로) 나눈다/g, '\n$2/=$6} $1')
     //출력
-    input = input.replace(/}\n([가-힣 !?,.]+) 이라고 출력한다/g, '\ndocument.getElementById(\'out\').value += \'$1\'} ')
-    input = input.replace(/}\n([가-힣 !?,.]+) 이라 출력한다/g, '\ndocument.getElementById(\'out\').value += \'$1\'} ')
-    input = input.replace(/}\n([가-힣 !?,.]+) 라고 출력한다/g, '\ndocument.getElementById(\'out\').value += \'$1\'} ')
-    input = input.replace(/}\n([가-힣 !?,.]+) 라 출력한다/g, '\ndocument.getElementById(\'out\').value += \'$1\'} ')
-    input = input.replace(/}\n([가-힣 !?,.]+) 고 출력한다/g, '\ndocument.getElementById(\'out\').value += \'$1\'} ')
-    input = input.replace(/}\n([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력한다/g, '\ndocument.getElementById(\'out\').value += $1.toString()} ')
-    input = input.replace(/}\n줄( |)을 바꾼다/g, '\ndocument.getElementById(\'out\').value += \'\\n\'} ')
+    input = input.replace(/\}(\}*)\n([가-힣 !?,.]+) 이라고 출력한다/g, '\ndocument.getElementById(\'out\').value += \'$2\'} $1')
+    input = input.replace(/\}(\}*)\n([가-힣 !?,.]+) 이라 출력한다/g, '\ndocument.getElementById(\'out\').value += \'$2\'} $1')
+    input = input.replace(/\}(\}*)\n([가-힣 !?,.]+) 라고 출력한다/g, '\ndocument.getElementById(\'out\').value += \'$2\'} $1')
+    input = input.replace(/\}(\}*)\n([가-힣 !?,.]+) 라 출력한다/g, '\ndocument.getElementById(\'out\').value += \'$2\'} $1')
+    input = input.replace(/\}(\}*)\n([가-힣 !?,.]+) 고 출력한다/g, '\ndocument.getElementById(\'out\').value += \'$2\'} $1')
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력한다/g, '\ndocument.getElementById(\'out\').value += $2.toString()} $1')
+    input = input.replace(/\}(\}*)\n줄( |)을 바꾼다/g, '\ndocument.getElementById(\'out\').value += \'\\n\'} $1')
     //입력
-    input = input.replace(/}\n(korvar[_0-9]+) (을|를|에)(다|)(가|) ([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) 입력(을 |)받는다/g, '\n$1 = prompt("$5", "")*1} ')
-    input = input.replace(/}\n([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) (korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받는다/g, '\n$3 = prompt("$1", "")*1} ')
-    input = input.replace(/}\n(korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받는다/g, '\n$1 = prompt("입력 : ", "")*1} ')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를|에)(다|)(가|) ([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) 입력(을 |)받는다/g, '\n$2 = prompt("$6", "")*1} $1')
+    input = input.replace(/\}(\}*)\n([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) (korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받는다/g, '\n$4 = prompt("$2", "")*1} $1')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받는다/g, '\n$2 = prompt("입력 : ", "")*1} $1')
+
+
+
+
 
     //중괄호 연장
     //var
-    input = input.replace(/}\n(korvar[_0-9]+) (을|를) (만들고|정의하고|생성하고)/g, '\nvar $1}')
-    input = input.replace(/}\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 으로 (정의하고|생성하고)/g, '\nvar $1 = $3}')
-    input = input.replace(/}\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 로 (정의하고|생성하고)/g, '\nvar $1 = $3}')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) (만들고|정의하고|생성하고)/g, '\nvar $2}$1')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 으로 (정의하고|생성하고)/g, '\nvar $2 = $4}$1')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 로 (정의하고|생성하고)/g, '\nvar $2 = $4}$1')
     //set
-    input = input.replace(/}\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 으로 (정하고|만들고|두고|바꾸고|설정하고)/g, '\n$1 = $3}')
-    input = input.replace(/}\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 로 (정하고|만들고|두고|바꾸고|설정하고)/g, '\n$1 = $3}')
-    input = input.replace(/}\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) (와|과) (같게 하고)/g, '\n$1 = $3}')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 으로 (정하고|만들고|두고|바꾸고|설정하고)/g, '\n$2 = $4}$1')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 로 (정하고|만들고|두고|바꾸고|설정하고)/g, '\n$2 = $4}$1')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) (와|과) (같게 하고)/g, '\n$2 = $4}$1')
     //+=, ++,...
-    input = input.replace(/}\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 더하고/g, '\n$1+=$5}')
-    input = input.replace(/}\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 빼고/g, '\n$1-=$5}')
-    input = input.replace(/}\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 곱하고/g, '\n$1*=$5}')
-    input = input.replace(/}\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를|으로|로) 나누고/g, '\n$1/=$5}')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 더하고/g, '\n$2+=$6}$1')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 빼고/g, '\n$2-=$6}$1')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 곱하고/g, '\n$2*=$6}$1')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를|으로|로) 나누고/g, '\n$2/=$6}$1')
     //출력
-    input = input.replace(/}\n([가-힣 !?,.]+) 이라고 출력하고/g, '\ndocument.getElementById(\'out\').value += \'$1\'}')
-    input = input.replace(/}\n([가-힣 !?,.]+) 이라 출력하고/g, '\ndocument.getElementById(\'out\').value += \'$1\'}')
-    input = input.replace(/}\n([가-힣 !?,.]+) 라고 출력하고/g, '\ndocument.getElementById(\'out\').value += \'$1\'}')
-    input = input.replace(/}\n([가-힣 !?,.]+) 라 출력하고/g, '\ndocument.getElementById(\'out\').value += \'$1\'}')
-    input = input.replace(/}\n([가-힣 !?,.]+) 고 출력하고/g, '\ndocument.getElementById(\'out\').value += \'$1\'}')
-    input = input.replace(/}\n([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력하고/g, '\ndocument.getElementById(\'out\').value += $1.toString()}')
-    input = input.replace(/}\n줄( |)을 바꾸고/g, '\ndocument.getElementById(\'out\').value += \'\\n\'}')
+    input = input.replace(/\}(\}*)\n([가-힣 !?,.]+) 이라고 출력하고/g, '\ndocument.getElementById(\'out\').value += \'$2\'}$1')
+    input = input.replace(/\}(\}*)\n([가-힣 !?,.]+) 이라 출력하고/g, '\ndocument.getElementById(\'out\').value += \'$2\'}$1')
+    input = input.replace(/\}(\}*)\n([가-힣 !?,.]+) 라고 출력하고/g, '\ndocument.getElementById(\'out\').value += \'$2\'}$1')
+    input = input.replace(/\}(\}*)\n([가-힣 !?,.]+) 라 출력하고/g, '\ndocument.getElementById(\'out\').value += \'$2\'}$1')
+    input = input.replace(/\}(\}*)\n([가-힣 !?,.]+) 고 출력하고/g, '\ndocument.getElementById(\'out\').value += \'$2\'}$1')
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력하고/g, '\ndocument.getElementById(\'out\').value += $2.toString()}$1')
+    input = input.replace(/\}(\}*)\n줄( |)을 바꾸고/g, '\ndocument.getElementById(\'out\').value += \'\\n\'}$1')
     //입력
-    input = input.replace(/}\n(korvar[_0-9]+) (을|를|에)(다|)(가|) ([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) 입력(을 |)받고/g, '\n$1 = prompt("$5", "")*1}')
-    input = input.replace(/}\n([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) (korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받고/g, '\n$3 = prompt("$1", "")*1}')
-    input = input.replace(/}\n(korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받고/g, '\n$1 = prompt("입력 : ", "")*1}')
-  }
-  //중괄호 없음
-  //var
-  input = input.replace(/(korvar[_0-9]+) (을|를) (만든다|정의한다|생성한다)/g, 'var $1')
-  input = input.replace(/(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 으로 (정의한다|생성한다)/g, 'var $1 = $3')
-  input = input.replace(/(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 로 (정의한다|생성한다)/g, 'var $1 = $3')
-  //set
-  input = input.replace(/(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 으로 (정한다|만든다|둔다|바꾼다|설정한다)/g, '$1 = $3')
-  input = input.replace(/(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 로 (정한다|만든다|둔다|바꾼다|설정한다)/g, '$1 = $3')
-  input = input.replace(/(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) (와|과) (같게 한다)/g, '$1 = $3')
-  //+=, ++,...
-  input = input.replace(/(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 더한다/g, '$1+=$5')
-  input = input.replace(/(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 뺀다/g, '$1-=$5')
-  input = input.replace(/(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 곱한다/g, '$1*=$5')
-  input = input.replace(/(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를|으로|로) 나눈다/g, '$1/=$5')
-  //출력
-  input = input.replace(/([가-힣 !?,.]+) 이라고 출력한다/g, 'document.getElementById(\'out\').value += \'$1\'')
-  input = input.replace(/([가-힣 !?,.]+) 이라 출력한다/g, 'document.getElementById(\'out\').value += \'$1\'')
-  input = input.replace(/([가-힣 !?,.]+) 라고 출력한다/g, 'document.getElementById(\'out\').value += \'$1\'')
-  input = input.replace(/([가-힣 !?,.]+) 라 출력한다/g, 'document.getElementById(\'out\').value += \'$1\'')
-  input = input.replace(/([가-힣 !?,.]+) 고 출력한다/g, 'document.getElementById(\'out\').value += \'$1\'')
-  input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력한다/g, 'document.getElementById(\'out\').value += $1.toString()')
-  input = input.replace(/줄( |)을 바꾼다/g, 'document.getElementById(\'out\').value += \'\\n\'')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를|에)(다|)(가|) ([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) 입력(을 |)받고/g, '\n$2 = prompt("$5", "")*1}$1')
+    input = input.replace(/\}(\}*)\n([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) (korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받고/g, '\n$4 = prompt("$2", "")*1}$1')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받고/g, '\n$2 = prompt("입력 : ", "")*1}$1')
 
-  //입력
-  input = input.replace(/(korvar[_0-9]+) (을|를|에)(다|)(가|) ([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) 입력(을 |)받는다/g, '$1 = prompt("$5", "")*1')
-  input = input.replace(/([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) (korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받는다/g, '$3 = prompt("$1", "")*1')
-  input = input.replace(/(korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받는다/g, '$1 = prompt("입력 : ", "")*1')
+    //else if
+    //같다
+    input = input.replace(/\}(\}*)\n(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (똑|)같(다|으)면/g, '\nelse if ($3 == $5){}}$1')
+    input = input.replace(/\}(\}*)\n(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 이|이)라면/g, '\nelse if ($3 == $5){}}$1')
+    input = input.replace(/\}(\}*)\n(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (다르|같지 않)(다|으)면/g, '\nelse if ($3 != $5){}}$1')
+    input = input.replace(/\}(\}*)\n(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 이|이)아니(|라)면/g, '\nelse if ($3 != $5){}}$1')
+
+    //부등식
+    input = input.replace(/\}(\}*)\n(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크(다|)면/g, '\nelse if ($3 > $5){}}$1')
+    input = input.replace(/\}(\}*)\n(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작(다|으)면/g, '\nelse if ($3 < $5){}}$1')
+    input = input.replace(/\}(\}*)\n(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크지 않(다|으)면/g, '\nelse if ($3 <= $5){}}$1')
+    input = input.replace(/\}(\}*)\n(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작지 않(다|으)면/g, '\nelse if ($3 >= $5){}}$1')
+    input = input.replace(/\}(\}*)\n(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크거나 같(다|)면/g, '\nelse if ($3 >= $5){}}$1')
+    input = input.replace(/\}(\}*)\n(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작거나 같(다|)면/g, '\nelse if ($3 <= $5){}}$1')
+
+    //if
+    //같다
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (똑|)같(다|으)면/g, '\nif ($2 == $4){}}$1')
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 이|이)라면/g, '\nif ($2 == $4){}}$1')
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (다르|같지 않)(다|으)면/g, '\nif ($2 != $4){}}$1')
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 이|이)아니(|라)면/g, '\nif ($2 != $4){}}$1')
+
+    //부등식
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크(다|)면/g, '\nif ($2 > $4){}}$1')
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작(다|으)면/g, '\nif ($2 < $4){}}$1')
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크지 않(다|으)면/g, '\nif ($2 <= $4){}}$1')
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작지 않(다|으)면/g, '\nif ($2 >= $4){}}$1')
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크거나 같(다|)면/g, '\nif ($2 >= $4){}}$1')
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작거나 같(다|)면/g, '\nif ($2 <= $4){}}$1')
+
+    //else
+    input = input.replace(/\}(\}*)\n아니라면/g, '\nelse{}}$1')
+
+    //while
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (똑|)같은 동안/g, '\nwhile ($2 == $4){}}$1')
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 인|인) 동안/g, '\nwhile ($2 == $4){}}$1')
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (다른|같지 않은) 동안/g, '\nwhile ($2 != $4){}}$1')
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) (| 이|이)아닌 동안/g, '\nwhile ($2 != $4){}}$1')
+    //부등식
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)큰 동안/g, '\nwhile ($2 > $4){}}$1')
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작은 동안/g, '\nwhile ($2 < $4){}}$1')
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크지 않은 동안/g, '\nwhile ($2 <= $4){}}$1')
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작지 않은 동안/g, '\nwhile ($2 >= $4){}}$1')
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크거나 같은 동안/g, '\nwhile ($2 >= $4){}}$1')
+    input = input.replace(/\}(\}*)\n([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작거나 같은 동안/g, '\nwhile ($2 <= $4){}}$1')
+    // console.log('\n')
+    // console.log(input)
+    // console.log(preinput)
+    //중괄호 없음
+    //var
+    input = input.replace(/(korvar[_0-9]+) (을|를) (만든다|정의한다|생성한다)/g, 'var $1')
+    input = input.replace(/(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 으로 (정의한다|생성한다)/g, 'var $1 = $3')
+    input = input.replace(/(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 로 (정의한다|생성한다)/g, 'var $1 = $3')
+    //set
+    input = input.replace(/(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 으로 (정한다|만든다|둔다|바꾼다|설정한다)/g, '$1 = $3')
+    input = input.replace(/(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 로 (정한다|만든다|둔다|바꾼다|설정한다)/g, '$1 = $3')
+    input = input.replace(/(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) (와|과) (같게 한다)/g, '$1 = $3')
+    //+=, ++,...
+    input = input.replace(/(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 더한다/g, '$1+=$5')
+    input = input.replace(/(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 뺀다/g, '$1-=$5')
+    input = input.replace(/(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를) 곱한다/g, '$1*=$5')
+    input = input.replace(/(korvar[_0-9]+) 에(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\(\)]+) (을|를|으로|로) 나눈다/g, '$1/=$5')
+    //출력
+    input = input.replace(/([가-힣 !?,.]+) 이라고 출력한다/g, 'document.getElementById(\'out\').value += \'$1\'')
+    input = input.replace(/([가-힣 !?,.]+) 이라 출력한다/g, 'document.getElementById(\'out\').value += \'$1\'')
+    input = input.replace(/([가-힣 !?,.]+) 라고 출력한다/g, 'document.getElementById(\'out\').value += \'$1\'')
+    input = input.replace(/([가-힣 !?,.]+) 라 출력한다/g, 'document.getElementById(\'out\').value += \'$1\'')
+    input = input.replace(/([가-힣 !?,.]+) 고 출력한다/g, 'document.getElementById(\'out\').value += \'$1\'')
+    input = input.replace(/([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력한다/g, 'document.getElementById(\'out\').value += $1.toString()')
+    input = input.replace(/줄( |)을 바꾼다/g, 'document.getElementById(\'out\').value += \'\\n\'')
+
+    //입력
+    input = input.replace(/(korvar[_0-9]+) (을|를|에)(다|)(가|) ([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) 입력(을 |)받는다/g, '$1 = prompt("$5", "")*1')
+    input = input.replace(/([가-힣 !?,.]+) (라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) (korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받는다/g, '$3 = prompt("$1", "")*1')
+    input = input.replace(/(korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받는다/g, '$1 = prompt("입력 : ", "")*1')
+
+    return input
+  }
 
 
 
 
 
   //string
-
-  return input
+  console.log(output)
+  return output
 }
 
 function run() {
@@ -228,8 +296,12 @@ function loaded() {
   $('#in').highlightWithinTextarea({
     highlight: [
       {
-        highlight: [/변수 [가-힣]+ /g, /숫자 [가-힣]+ /g],
-        className: 'varornum'
+        highlight: [/변수(?= [가-힣]+ )/g, /숫자(?= [일이삼사오육칠팔구영십백천만억조]+ )/g],
+        className: 'numvar'
+      },
+      {
+        highlight: [/(?<=변수 )[가-힣]+ /g, /(?<=숫자 )[일이삼사오육칠팔구영십백천만억조]+ /g],
+        className: 'numvarname'
       },
       {
         highlight: [/[가-힣]+다$/mg, /[가-힣]+고$/mg],
@@ -314,12 +386,12 @@ function errlinecheck() {
     }
   }
   // console.log(errlines.map(x => new RegExp('^' + x.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&') + '$', 'm')))
-  // console.log(code)
+  console.log(code)
   errlines = [...new Set(errlines)]
   // console.log(document.getElementsByClassName("hwt-highlights hwt-content")[0].innerHTML)
   errlines = errlines.map(x => new RegExp('(?<=' + x.split('A')[0].replace(/[|\\{}()[\]^$+*?.]/g, '\\$&') + ')^' + x.split('A')[1].replace(/[|\\{}()[\]^$+*?.]/g, '\\$&') + '$', 'mg'))
   // 
-  console.log(errlines)
+  // console.log(errlines)
   return errlines
 }
 // function noerrlinecheck() {
