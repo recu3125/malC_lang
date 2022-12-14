@@ -1,4 +1,5 @@
 # <a href = "https://recu3125.github.io/Kording_lang/">> Kording_lang <</a>
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Frecu3125%2FKording_lang&count_bg=%235688CE&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)<br>
 ### 순수 한국어/한글 프로그래밍 언어 Kording입니다!<br>
 ### 왼쪽의 칸에 코딩하고 실행 버튼을 눌러 출력값을 확인할 수 있습니다.
 오류, 버그가 있거나, 뜻하는 바는 같은 비슷한 문장인데 조사 차이 등으로 인식되지 않는 코드가 있다면,
