@@ -1,7 +1,7 @@
-# <a href = "https://recu3125.github.io/Kording_lang/">> Kording_lang <</a>
+# <a href = "https://recu3125.github.io/malC_lang/">> 말씨 <</a>
 링크에 들어가서 하단 예제 코드를 붙여넣기해보세요! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Frecu3125%2FKording_lang&count_bg=%235688CE&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)<br>
-### 순수 한국어/한글 프로그래밍 언어 Kording입니다!<br>
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Frecu3125%2FmalC_lang&count_bg=%234E7BBA&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)<br>
+### 순수 한국어/한글 프로그래밍 언어 말씨입니다!<br>
 ### 왼쪽의 칸에 코딩하고 실행 버튼을 눌러 출력값을 확인할 수 있습니다.
 오류, 버그가 있거나, 뜻하는 바는 같은 비슷한 문장인데 조사 차이 등으로 인식되지 않는 코드가 있다면,
 <br>아니면 코드에서 오류가 나는데 어떤 오류인지 모르겠다면
@@ -27,7 +27,6 @@
 다중 구문에서 현재 인덴트가 없어 가독성이 큰일났는데 자동 인덴트 기능 만들기
 배열 지원하기
 타입스크립트로 바꿔보기
-좀더 이쁜 이름 찾아보기 - 한국어로 읽으면 콜딩이라 뭔가 차가워지는거같음
 </pre>
 
 ### 문법
