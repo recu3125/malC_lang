@@ -71,7 +71,7 @@ function convert() {
   for (let i = 0; i < input.length; i++) {
     output += input[i] + '\n'
     output = processstep(output)
-    console.log(output)
+    // console.log(output)
   }
 
 
@@ -259,7 +259,7 @@ function convert() {
 
     //입력
     input = input.replace(/(korvar[_0-9]+) (을|를|에)(다|)(가|) ([가-힣 !?,.]+) (이|)(라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) 입력(을 |)받는다/g, '$1 = prompt("$5", "")*1')
-    input = input.replace(/([가-힣 !?,.]+) (이|)(라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) (korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받는다/g, '$3 = prompt("$1", "")*1')
+    input = input.replace(/([가-힣 !?,.]+) (이|)(라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) (korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받는다/g, '$4 = prompt("$1", "")*1')
     input = input.replace(/(korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받는다/g, '$1 = prompt("입력 : ", "")*1')
 
     return input
@@ -386,7 +386,7 @@ function errlinecheck() {
     }
   }
   // console.log(errlines.map(x => new RegExp('^' + x.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&') + '$', 'm')))
-  console.log(code)
+  // console.log(code)
   errlines = [...new Set(errlines)]
   // console.log(document.getElementsByClassName("hwt-highlights hwt-content")[0].innerHTML)
   errlines = errlines.map(x => new RegExp('(?<=' + x.split('A')[0].replace(/[|\\{}()[\]^$+*?.]/g, '\\$&') + ')^' + x.split('A')[1].replace(/[|\\{}()[\]^$+*?.]/g, '\\$&') + '$', 'mg'))
