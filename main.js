@@ -76,10 +76,7 @@ function convert() {
 
 
   function processstep(input) {
-
-
-
-    //if 인데...앞이 괄호닫힘이 아닐 때만
+    //ifwhile 인데...앞이 괄호닫힘이 아닐 때만 (중괄호 0->1 if)
     //else if
     //같다
     input = input.replace(/(?<=[^\}]\n)(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (똑|)같(다|으)면$/m, 'else if ($2 == $4){}')
@@ -110,7 +107,6 @@ function convert() {
     input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)크거나 같(다|)면$/m, 'if ($1 >= $3){}')
     input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작거나 같(다|)면$/m, 'if ($1 <= $3){}')
 
-
     //else
     input = input.replace(/(?<=[^\}]\n)아니라면$/m, 'else{}')
 
@@ -128,11 +124,15 @@ function convert() {
     input = input.replace(/(?<=[^\}]\n)([0-9\+\-\*/_korvar\(\)]+) (이|가) ([0-9\+\-\*/_korvar\(\)]+) 보다 (더 |)작거나 같은 동안$/m, 'while ($1 <= $3){}')
 
 
+
+
+
     //중괄호 끝맺음
+    //일반
     //var
-    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) (만든다|정의한다|생성한다)$/m, '\nvar $2} $1')
-    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 으로 (정의한다|생성한다)$/m, '\nvar $2 = $4} $1')
-    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 로 (정의한다|생성한다)$/m, '\nvar $2 = $4} $1')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) (만든다|정의한다|생성한다|선언한다)$/m, '\nvar $2} $1')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 으로 (정의한다|생성한다|선언한다)$/m, '\nvar $2 = $4} $1')
+    input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 로 (정의한다|생성한다|선언한다)$/m, '\nvar $2 = $4} $1')
     //set
     input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 으로 (정한다|만든다|둔다|바꾼다|설정한다)$/m, '\n$2 = $4} $1')
     input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 로 (정한다|만든다|둔다|바꾼다|설정한다)$/m, '\n$2 = $4} $1')
@@ -160,6 +160,8 @@ function convert() {
 
 
     //중괄호 연장
+
+    //일반
     //var
     input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) (만들고|정의하고|생성하고)$/m, '\nvar $2}$1')
     input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 으로 (정의하고|생성하고)$/m, '\nvar $2 = $4}$1')
@@ -186,6 +188,7 @@ function convert() {
     input = input.replace(/\}(\}*)\n([가-힣 !?,.]+) (이|)(라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) (korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받고$/m, '\n$4 = prompt("$2", "")*1}$1')
     input = input.replace(/\}(\}*)\n(korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받고$/m, '\n$2 = prompt("입력 : ", "")*1}$1')
 
+    //ifwhile(괄호 하나더추가)
     //else if
     //같다
     input = input.replace(/\}(\}*)\n(아닌데|아니고|아니면서) ([0-9\+\-\*/_korvar\(\)]+) (이|가|와|과) ([0-9\+\-\*/_korvar\(\)]+) ( 이|이|가| 가|와|과) (똑|)같(다|으)면$/m, '\nelse if ($3 == $5){}}$1')
@@ -234,11 +237,18 @@ function convert() {
     // console.log('\n')
     // console.log(input)
     // console.log(preinput)
+
+
+
+
+
     //중괄호 없음
+    //일반
     //var
-    input = input.replace(/^(korvar[_0-9]+) (을|를) (만든다|정의한다|생성한다)$/m, 'var $1')
-    input = input.replace(/^(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 으로 (정의한다|생성한다)$/m, 'var $1 = $3')
-    input = input.replace(/^(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 로 (정의한다|생성한다)$/m, 'var $1 = $3')
+    input = input.replace(/^(korvar[_0-9]+) (을|를) (만든다|정의한다|생성한다|선언한다)$/m, 'var $1')
+    input = input.replace(/^(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 으로 (정의한다|생성한다|선언한다)$/m, 'var $1 = $3')
+    input = input.replace(/^(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 로 (정의한다|생성한다|선언한다)$/m, 'var $1 = $3')
+
     //set
     input = input.replace(/^(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 으로 (정한다|만든다|둔다|바꾼다|설정한다)$/m, '$1 = $3')
     input = input.replace(/^(korvar[_0-9]+) (을|를) ([0-9\+\-\*/_korvar\(\)]+) 로 (정한다|만든다|둔다|바꾼다|설정한다)$/m, '$1 = $3')
@@ -256,7 +266,6 @@ function convert() {
     input = input.replace(/^([가-힣 !?,.]+) 고 출력한다$/m, 'document.getElementById(\'out\').value += \'$1\'')
     input = input.replace(/^([0-9\+\-\*/_korvar\(\)]+) (을|를) 출력한다$/m, 'document.getElementById(\'out\').value += $1.toString()')
     input = input.replace(/^줄( |)을 바꾼다$/m, 'document.getElementById(\'out\').value += \'\\n\'')
-
     //입력
     input = input.replace(/^(korvar[_0-9]+) (을|를|에)(다|)(가|) ([가-힣 !?,.]+) (이|)(라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) 입력(을 |)받는다$/m, '$1 = prompt("$5", "")*1')
     input = input.replace(/^([가-힣 !?,.]+) (이|)(라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) (korvar[_0-9]+) (을|를|에)(다|)(가|) 입력(을 |)받는다$/m, '$4 = prompt("$1", "")*1')
