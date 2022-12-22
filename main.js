@@ -101,7 +101,7 @@ function convert() {
   }
 
   //연산식렌더 + 배열원소렌더 다될때까지
-  console.log(input)
+  // console.log(input)
   let preinput
   while (input != preinput) {
     preinput = input
@@ -116,8 +116,8 @@ function convert() {
     input = input.replace(/([0-9\+\-\*/_korvar\[\]\(\)]+) (와|과|에)(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\[\]\(\)]+) (을|를) 곱한 (거|것)/g, '($1+$6)')
     input = input.replace(/([0-9\+\-\*/_korvar\[\]\(\)]+) (와|과|에)(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\[\]\(\)]+) 의 곱/g, '($1*$6)')
     input = input.replace(/([0-9\+\-\*/_korvar\[\]\(\)]+) (와|과|에)(서|)(다가|)(다|) ([0-9\+\-\*/_korvar\[\]\(\)]+) (을|를|로|으로) 나눈 (거|것)/g, '($1+$6)')
-  input = input.replace(/(korarr_[0123456789]+) 의 ([첫한두세네다섯여섯일곱여덟아홉열스물무서른마흔쉰예순일흔여든아흔영일이삼사오육칠팔구십백천만억조]+) (번째|번|째) (원소|수)/g, arrelementreplacer)
-  input = input.replace(/(korarr_[0123456789]+) 의 ([0-9\+\-\*/_korvar\[\]\(\)]+) (번째|번|째) (원소|수)/g, '$1[$2]')
+    input = input.replace(/(korarr_[0123456789]+) 의 ([첫한두세네다섯여섯일곱여덟아홉열스물무서른마흔쉰예순일흔여든아흔영일이삼사오육칠팔구십백천만억조]+) (번째|번|째) (원소|수)/g, arrelementreplacer)
+    input = input.replace(/(korarr_[0123456789]+) 의 ([0-9\+\-\*/_korvar\[\]\(\)]+) (번째|번|째) (원소|수)/g, '$1[$2]')
   }
 
 
@@ -351,27 +351,62 @@ function convert() {
 
 
   //string
-  console.log(output)
+  // console.log(output)
   return output
 }
-
+var willcheckloop = true
 function run() {
+  clearTimeout(allowloop1)
+  clearTimeout(allowloop2)
+  clearTimeout(allowloop3)
+  clearTimeout(allowloop4)
+  clearTimeout(allowloop5)
+  document.getElementById('run').innerHTML = '실행!'
   if (!haserror) {
     document.getElementById('out').value = ''
     try {
-      var timelimit = setTimeout(() => {
-        throw new Error('실행하는 데 3초나 걸리길래 일단 멈췄어요! 의도한 작동이 맞나요?');
-      }, 3000);
-      eval(convert());
-      clearTimeout(timelimit);
-    } catch (e) {
-      output = ''
-      function errreplacer(match, p1, offset, string) {
-        p1 = p1.split('_').slice(1)
-        return ('변수 ' + p1.map(x => String.fromCharCode(x)).join('').toString() + '가 정의되지 않았습니다!')
+      if (willcheckloop) {
+        eval('var starttime = performance.now()\n' + convert().replace(/(while.*)/, '$1\nif(performance.now()-starttime>3000){throw new Error(\'timeout\');}'))
       }
-      output = e.message.toString().replace(/korvar(.+) is not defined/g, errreplacer)
-      document.getElementById('out').value = output
+      else {
+        eval(convert())
+      }
+    } catch (e) {
+      if (e.message.toString() == 'timeout') {
+        document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?' + '\n 5초 안에 다시 한 번 클릭해서 시간 제한 없이 실행'
+        willcheckloop = false
+        document.getElementById('run').innerHTML = '시간 제한 없이 실행! (5초 후 일반 실행으로 바뀜)'
+        var allowloop5 = setTimeout(() => {
+          document.getElementById('run').innerHTML = '실행!'
+          willcheckloop = true
+          document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?'
+        }, 5000);
+        var allowloop1 = setTimeout(() => {
+          document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?' + '\n 4초 안에 다시 한 번 클릭해서 시간 제한 없이 실행'
+        document.getElementById('run').innerHTML = '시간 제한 없이 실행! (4초 후 일반 실행으로 바뀜)'
+        }, 1000);
+        var allowloop2 = setTimeout(() => {
+          document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?' + '\n 3초 안에 다시 한 번 클릭해서 시간 제한 없이 실행'
+        document.getElementById('run').innerHTML = '시간 제한 없이 실행! (3초 후 일반 실행으로 바뀜)'
+        }, 2000);
+        var allowloop3 = setTimeout(() => {
+          document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?' + '\n 2초 안에 다시 한 번 클릭해서 시간 제한 없이 실행'
+        document.getElementById('run').innerHTML = '시간 제한 없이 실행! (2초 후 일반 실행으로 바뀜)'
+        }, 3000);
+        var allowloop4 = setTimeout(() => {
+          document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?' + '\n 1초 안에 다시 한 번 클릭해서 시간 제한 없이 실행'
+        document.getElementById('run').innerHTML = '시간 제한 없이 실행! (1초 후 일반 실행으로 바뀜)'
+        }, 4000);
+      }
+      else {
+        output = ''
+        function errreplacer(match, p1, offset, string) {
+          p1 = p1.split('_').slice(1)
+          return ('변수 ' + p1.map(x => String.fromCharCode(x)).join('').toString() + '가 정의되지 않았습니다!')
+        }
+        output = e.message.toString().replace(/korvar(.+) is not defined/g, errreplacer)
+        document.getElementById('out').value = output
+      }
     }
   }
 }
@@ -403,7 +438,7 @@ function loaded() {
         className: 'string'
       },
       {
-        highlight: errlinecheck,  
+        highlight: errlinecheck,
         className: 'err'
       },
       {
@@ -454,16 +489,11 @@ function livecheck() {
       haserror = true
     }
   }
-  console.log(byline)
-  console.log(byline2)
   errlines = [...new Set(errlines)]
-  console.log(code)
-  console.log(errlines)
   errlines = errlines.map(x => new RegExp('(?<=' + x.split('A')[0].replace(/[|\\{}()[\]^$+*?.]/g, '\\$&') + ')^' + x.split('A')[1].replace(/[|\\{}()[\]^$+*?.]/g, '\\$&') + '$', 'mg'))
-  console.log(errlines)
   $('#in').highlightWithinTextarea('update');
 }
-function errlinecheck(){
+function errlinecheck() {
   return errlines
 }
 // function noerrlinecheck() {
