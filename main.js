@@ -366,7 +366,7 @@ function run() {
     document.getElementById('out').value = ''
     try {
       if (willcheckloop) {
-        eval('var starttime = performance.now()\n' + convert().replace(/(while.*)/, '$1\nif(performance.now()-starttime>3000){throw new Error(\'timeout\');}'))
+        eval('var starttime = performance.now()\n' + convert().replace(/(while[^}]*)/, '$1\nif(performance.now()-starttime>3000){throw new Error(\'timeout\');}'))
       }
       else {
         eval(convert())
