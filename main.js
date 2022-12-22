@@ -22,29 +22,31 @@ function convert() {
     if (kornum == ['영']) {
       return '0'
     }
-    res = 0
-    kor1 = ['일', '이', '삼', '사', '오', '육', '칠', '팔', '구']
-    kor2 = ['십', '백', '천']
-    kor3 = ['만', '억', '조']
-    len = kornum.length
-    one = 0
+    let kor1 = ['일', '이', '삼', '사', '오', '육', '칠', '팔', '구']
+    let kor2 = ['십', '백', '천']
+    let kor3 = ['만', '억', '조']
+    let len = kornum.length
+    let one = 0
+    let thousand = 0
+    let res = 0
     for (i = 0; i < len; i++) {
       if (kor2.indexOf(kornum[i]) != -1) {
-        if (one == 0) res += Math.pow(10, kor2.indexOf(kornum[i]) + 1)
-        else res += one * Math.pow(10, kor2.indexOf(kornum[i]) + 1)
+        if (one == 0) thousand += Math.pow(10, kor2.indexOf(kornum[i]) + 1)
+        else thousand += one * Math.pow(10, kor2.indexOf(kornum[i]) + 1)
+        one = 0
       }
       if (kor3.indexOf(kornum[i]) != -1) {
-        res += one
-        res *= Math.pow(10000, kor3.indexOf(kornum[i]) + 1)
+        thousand += one
+        if(thousand == 0) res += Math.pow(10000, kor3.indexOf(kornum[i]) + 1)
+        else res += thousand*Math.pow(10000, kor3.indexOf(kornum[i]) + 1)
+        thousand = 0
+        one = 0
       }
       if (kor1.indexOf(kornum[i]) != -1) {
         one = kor1.indexOf(kornum[i]) + 1
       }
-      else {
-        one = 0
-      }
     }
-    return (res + one).toString()
+    return (res + thousand + one).toString()
   }
   input = input.replace(/숫자 ([영일이삼사오육칠팔구십백천만억조]+)/g, numreplacer)
 
@@ -75,29 +77,34 @@ function convert() {
       index = index.replace('스무', '')
     }
     let kornum = index.split('')
-    res = 0
-    kor1 = ['일', '이', '삼', '사', '오', '육', '칠', '팔', '구']
-    kor2 = ['십', '백', '천']
-    kor3 = ['만', '억', '조']
-    len = kornum.length
-    one = 0
+    if (kornum == ['영']) {
+      return '0'
+    }
+    let kor1 = ['일', '이', '삼', '사', '오', '육', '칠', '팔', '구']
+    let kor2 = ['십', '백', '천']
+    let kor3 = ['만', '억', '조']
+    let len = kornum.length
+    let one = 0
+    let thousand = 0
+    let res = 0
     for (i = 0; i < len; i++) {
       if (kor2.indexOf(kornum[i]) != -1) {
-        if (one == 0) res += Math.pow(10, kor2.indexOf(kornum[i]) + 1)
-        else res += one * Math.pow(10, kor2.indexOf(kornum[i]) + 1)
+        if (one == 0) thousand += Math.pow(10, kor2.indexOf(kornum[i]) + 1)
+        else thousand += one * Math.pow(10, kor2.indexOf(kornum[i]) + 1)
+        one = 0
       }
       if (kor3.indexOf(kornum[i]) != -1) {
-        res += one
-        res *= Math.pow(10000, kor3.indexOf(kornum[i]) + 1)
+        thousand += one
+        if(thousand == 0) res += Math.pow(10000, kor3.indexOf(kornum[i]) + 1)
+        else res += thousand*Math.pow(10000, kor3.indexOf(kornum[i]) + 1)
+        thousand = 0
+        one = 0
       }
       if (kor1.indexOf(kornum[i]) != -1) {
         one = kor1.indexOf(kornum[i]) + 1
       }
-      else {
-        one = 0
-      }
     }
-    return arrayname + '[' + (res + one + countres).toString() + ']'
+    return arrayname + '[' + (res + one + thousand + countres).toString() + ']'
   }
 
   //연산식렌더 + 배열원소렌더 다될때까지
