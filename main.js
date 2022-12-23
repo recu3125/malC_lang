@@ -373,7 +373,7 @@ function run() {
     document.getElementById('out').value = ''
     try {
       if (willcheckloop) {
-        eval('var starttime = performance.now()\n' + convert().replace(/(while[^}]*)/, '$1\nif(performance.now()-starttime>3000){throw new Error(\'timeout\');}'))
+        eval('var starttime = performance.now()\n' + convert().replace(/(while[^}]*)/g, '$1\nif(performance.now()-starttime>3000){throw new Error(\'timeout\');}'))
       }
       else {
         eval(convert())
@@ -432,7 +432,7 @@ function loaded() {
       },
       {
         highlight: [/[가-힣]+다$/mg, /[가-힣]+고$/mg],
-        className: 'pink'
+        className: 'do'
       },
       {
         highlight: /[가-힣 !?,.]+(면|동안)$/gm,
@@ -450,7 +450,7 @@ function loaded() {
       },
       {
         highlight: /^[가-힣ㄱ-ㅎㅏ-ㅣ !?,.]+$/gm,
-        className: 'green'
+        className: 'base'
       }
     ]
   });

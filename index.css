@@ -44,12 +44,12 @@ mark.err {
   background-color: #c8053f55;
 }
 
-mark.pink {
+mark.do {
   background-color: #00000000;
   color: #d38ba1;
 }
 
-mark.green {
+mark.base {
   background-color: #00000000;
   color: #CCCCCC !important;
 }
