@@ -42,6 +42,7 @@ body {
 
 mark.err {
   background-color: #c8053f55;
+  color: #CCCCCC;
 }
 
 mark.do {
@@ -49,9 +50,18 @@ mark.do {
   color: #d38ba1;
 }
 
+mark.unexpectedspace{
+  background-color: #00000000;
+  color: #d38ba1;
+}
+
+mark.err mark.unexpectedspace{
+  background-color: #ff000088;
+}
+
 mark.base {
   background-color: #00000000;
-  color: #CCCCCC !important;
+  color: #CCCCCC;
 }
 
 mark.numvar {

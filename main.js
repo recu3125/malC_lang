@@ -1,4 +1,3 @@
-
 const ARRAYELEMENT = 'korarr[_0-9]+\\[[0-9\\+\\-\\*/_korvar\\[\\]\\(\\)]+\\]'
 const FORMULA = '[0-9\\+\\-\\*/_korvar\\[\\]\\(\\)]+'
 const VARIABLE = 'korvar[_0-9]+'
@@ -7,7 +6,7 @@ const ARRAY = 'korarr[_0-9]+'
 const TEXT = '[가-힣 !?,.]+'
 const CLOSES = '\\}*'
 function convert() {
-  input = document.getElementsByClassName("hwt-highlights hwt-content")[0].innertext || document.getElementsByClassName("hwt-highlights hwt-content")[0].textContent
+  let input = document.getElementsByClassName("hwt-highlights hwt-content")[0].innertext || document.getElementsByClassName("hwt-highlights hwt-content")[0].textContent
 
 
   //변수렌더
@@ -130,7 +129,7 @@ function convert() {
     //TODO 차, 절댓값 등 함수
     input = input.replace(new RegExp(`(${FORMULA}) (와|과|에)(서|)(다가|)(다|) (${FORMULA}) (을|를) 곱한 (거|것)`, 'g'), '($1+$6)')
     input = input.replace(new RegExp(`(${FORMULA}) (와|과|에)(서|)(다가|)(다|) (${FORMULA}) 의 곱`, 'g'), '($1*$6)')
-    input = input.replace(new RegExp(`(${FORMULA}) (와|과|에)(서|)(다가|)(다|) (${FORMULA}) (을|를|로|으로) 나눈 (거|것)`, 'g'), '($1+$6)')
+    input = input.replace(new RegExp(`(${FORMULA}) (?:을|를) (${FORMULA}) (을|를|로|으로) 나눈 (거|것)`, 'g'), '($1+$6)')
     input = input.replace(new RegExp(`(korarr_[0123456789_]+) 의 ([첫한두세네다섯여섯일곱여덟아홉열스물무서른마흔쉰예순일흔여든아흔영일이삼사오육칠팔구십백천만억조]+) (번째|번|째) (원소|수)`, 'g'), arrelementreplacer)
     input = input.replace(new RegExp(`(korarr_[0123456789_]+) 의 (${FORMULA}) (번째|번|째) (원소|수)`, 'g'), '$1[$2]')
   }
@@ -219,25 +218,22 @@ function convert() {
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) (?:을|를) (${FORMULA}) 로 (?:정의한다|생성한다|선언한다)$`, 'm'), '\nvar $2 = $3} $1')
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${ARRAY}) (?:을|를) (?:만든다|정의한다|생성한다|선언한다)$`, 'm'), '\nvar $2 = []} $1')
     //set
-    input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) (?:을|를) (${FORMULA}) 으로 (?:정한다|만든다|둔다|바꾼다|설정한다)$`, 'm'), '\n$2 = $3} $1')
-    input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) (?:을|를) (${FORMULA}) 로 (?:정한다|만든다|둔다|바꾼다|설정한다)$`, 'm'), '\n$2 = $3} $1')
+    input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) (?:을|를) (${FORMULA}) 으로 (?:정한다|지정한다|만든다|둔다|바꾼다|설정한다)$`, 'm'), '\n$2 = $3} $1')
+    input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) (?:을|를) (${FORMULA}) 로 (?:정한다|지정한다|만든다|둔다|바꾼다|설정한다)$`, 'm'), '\n$2 = $3} $1')
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) (?:을|를) (${FORMULA}) (?:와|과) (?:같게 한다)$`, 'm'), '\n$2 = $3} $1')
     //+=, ++,...
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) 에(?:서|)(?:다가|)(?:다|) (${FORMULA}) (?:을|를) 더한다$`, 'm'), '\n$2+=$3} $1')
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) 에(?:서|)(?:다가|)(?:다|) (${FORMULA}) (?:을|를) 뺀다$`, 'm'), '\n$2-=$3} $1')
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) 에(?:서|)(?:다가|)(?:다|) (${FORMULA}) (?:을|를) 곱한다$`, 'm'), '\n$2*=$3} $1')
-    input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) 에(?:서|)(?:다가|)(?:다|) (${FORMULA}) (?:을|를|으로|로) 나눈다`, 'm'), '\n$2/=$3} $1')
+    input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) (?:을|를) (${FORMULA}) (?:을|를|으로|로) 나눈다`, 'm'), '\n$2/=$3} $1')
     //출력
-    input = input.replace(new RegExp(`\}(${CLOSES})\n(${TEXT}) 이라고 출력한다$`, 'm'), '\ndocument.getElementById(\'out\').value += \'$2\'} $1')
-    input = input.replace(new RegExp(`\}(${CLOSES})\n(${TEXT}) 이라 출력한다$`, 'm'), '\ndocument.getElementById(\'out\').value += \'$2\'} $1')
-    input = input.replace(new RegExp(`\}(${CLOSES})\n(${TEXT}) 라고 출력한다$`, 'm'), '\ndocument.getElementById(\'out\').value += \'$2\'} $1')
-    input = input.replace(new RegExp(`\}(${CLOSES})\n(${TEXT}) 라 출력한다$`, 'm'), '\ndocument.getElementById(\'out\').value += \'$2\'} $1')
-    input = input.replace(new RegExp(`\}(${CLOSES})\n(${TEXT}) 고 출력한다$`, 'm'), '\ndocument.getElementById(\'out\').value += \'$2\'} $1')
+    input = input.replace(new RegExp(`\}(${CLOSES})\n(${TEXT}) (?:이|)(?:라고|하고|하며|하면서|라며|라면서|라|고) 출력한다$`, 'm'), '\ndocument.getElementById(\'out\').value += \'$2\'} $1')
+    input = input.replace(new RegExp(`\}(${CLOSES})\n([0-9]+) (?:을|를) 출력한다$`, 'm'), '\ndocument.getElementById(\'out\').value += $2..toString()} $1')
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${FORMULA}) (?:을|를) 출력한다$`, 'm'), '\ndocument.getElementById(\'out\').value += $2.toString()} $1')
     input = input.replace(new RegExp(`\}(${CLOSES})\n줄(?: |)을 바꾼다$`, 'm'), '\ndocument.getElementById(\'out\').value += \'\\n\'} $1')
     //입력
-    input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) (?:을|를|에)(?:다|)(?:가|) (${TEXT}) (?:이|)(?:라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) 입력(?:을 |)받는다$`, 'm'), '\n$2 = prompt("$6", "")*1} $1')
-    input = input.replace(new RegExp(`\}(${CLOSES})\n(${TEXT}) (?:이|)(?:라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) (${VAR_ELE}) (?:을|를|에)(?:다|)(?:가|) 입력(?:을 |)받는다$`, 'm'), '\n$4 = prompt("$2", "")*1} $1')
+    input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) (?:을|를|에)(?:다|)(?:가|) (${TEXT}) (?:이|)(?:라고|하고|하며|하면서|라며|라면서|라|고)(?:| 하면서| 물어보면서| 물어보며| 물어| 물으며) 입력(?:을 |)받는다$`, 'm'), '\n$3 = prompt("$2", "")*1} $1')
+    input = input.replace(new RegExp(`\}(${CLOSES})\n(${TEXT}) (?:이|)(?:라고|하고|하며|하면서|라며|라면서|라|고)(?:| 하면서| 물어보면서| 물어보며| 물어| 물으며) (${VAR_ELE}) (?:을|를|에)(?:다|)(?:가|) 입력(?:을 |)받는다$`, 'm'), '\n$3 = prompt("$2", "")*1} $1')
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) (?:을|를|에)(?:다|)(?:가|) 입력(?:을 |)받는다$`, 'm'), '\n$2 = prompt("입력 : ", "")*1} $1')
 
 
@@ -260,18 +256,15 @@ function convert() {
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) 에(?:서|)(?:다가|)(?:다|) (${FORMULA}) (?:을|를) 더하고$`, 'm'), '\n$2+=$3}$1')
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) 에(?:서|)(?:다가|)(?:다|) (${FORMULA}) (?:을|를) 빼고$`, 'm'), '\n$2-=$3}$1')
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) 에(?:서|)(?:다가|)(?:다|) (${FORMULA}) (?:을|를) 곱하고$`, 'm'), '\n$2*=$3}$1')
-    input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) 에(?:서|)(?:다가|)(?:다|) (${FORMULA}) (?:을|를|으로|로) 나누고`, 'm'), '\n$2/=$3}$1')
+    input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) (?:을|를) (${FORMULA}) (?:을|를|으로|로) 나누고`, 'm'), '\n$2/=$3}$1')
     //출력
-    input = input.replace(new RegExp(`\}(${CLOSES})\n(${TEXT}) 이라고 출력하고$`, 'm'), '\ndocument.getElementById(\'out\').value += \'$2\'}$1')
-    input = input.replace(new RegExp(`\}(${CLOSES})\n(${TEXT}) 이라 출력하고$`, 'm'), '\ndocument.getElementById(\'out\').value += \'$2\'}$1')
-    input = input.replace(new RegExp(`\}(${CLOSES})\n(${TEXT}) 라고 출력하고$`, 'm'), '\ndocument.getElementById(\'out\').value += \'$2\'}$1')
-    input = input.replace(new RegExp(`\}(${CLOSES})\n(${TEXT}) 라 출력하고$`, 'm'), '\ndocument.getElementById(\'out\').value += \'$2\'}$1')
-    input = input.replace(new RegExp(`\}(${CLOSES})\n(${TEXT}) 고 출력하고$`, 'm'), '\ndocument.getElementById(\'out\').value += \'$2\'}$1')
+    input = input.replace(new RegExp(`\}(${CLOSES})\n(${TEXT}) (?:이|)(?:라고|하고|하며|하면서|라며|라면서|라|고) 출력하고$`, 'm'), '\ndocument.getElementById(\'out\').value += \'$2\'}$1')
+    input = input.replace(new RegExp(`\}(${CLOSES})\n([0-9]+) (?:을|를) 출력하고$`, 'm'), '\ndocument.getElementById(\'out\').value += $2..toString()}$1')
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${FORMULA}) (?:을|를) 출력하고$`, 'm'), '\ndocument.getElementById(\'out\').value += $2.toString()}$1')
     input = input.replace(new RegExp(`\}(${CLOSES})\n줄(?: |)을 바꾸고$`, 'm'), '\ndocument.getElementById(\'out\').value += \'\\n\'}$1')
     //입력
-    input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) (?:을|를|에)(?:다|)(?:가|) (${TEXT}) (?:이|)(?:라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) 입력(?:을 |)받고$`, 'm'), '\n$2 = prompt("$3", "")*1}$1')
-    input = input.replace(new RegExp(`\}(${CLOSES})\n(${TEXT}) (?:이|)(?:라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) (${VAR_ELE}) (?:을|를|에)(?:다|)(?:가|) 입력(?:을 |)받고$`, 'm'), '\n$3 = prompt("$2", "")*1}$1')
+    input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) (?:을|를|에)(?:다|)(?:가|) (${TEXT}) (?:이|)(?:라고|하고|하며|하면서|라며|라면서|라|고)(?:| 하면서| 물어보면서| 물어보며| 물어| 물으며) 입력(?:을 |)받고$`, 'm'), '\n$2 = prompt("$3", "")*1}$1')
+    input = input.replace(new RegExp(`\}(${CLOSES})\n(${TEXT}) (?:이|)(?:라고|하고|하며|하면서|라며|라면서|라|고)(?:| 하면서| 물어보면서| 물어보며| 물어| 물으며) (${VAR_ELE}) (?:을|를|에)(?:다|)(?:가|) 입력(?:을 |)받고$`, 'm'), '\n$3 = prompt("$2", "")*1}$1')
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) (?:을|를|에)(?:다|)(?:가|) 입력(?:을 |)받고$`, 'm'), '\n$2 = prompt("입력 : ", "")*1}$1')
 
     //ifwhile(괄호 하나더추가)
@@ -332,34 +325,31 @@ function convert() {
     //일반
     //var
     input = input.replace(new RegExp(`^(${VAR_ELE}) (?:을|를) (?:만든다|정의한다|생성한다|선언한다)$`, 'm'), 'var $1')
-    console.log(new RegExp(`^(${VAR_ELE}) (?:을|를) (?:만든다|정의한다|생성한다|선언한다)$`, 'm'))
     input = input.replace(new RegExp(`^(${VAR_ELE}) (?:을|를) (${FORMULA}) 으로 (?:정의한다|생성한다|선언한다)$`, 'm'), 'var $1 = $2')
     input = input.replace(new RegExp(`^(${VAR_ELE}) (?:을|를) (${FORMULA}) 로 (?:정의한다|생성한다|선언한다)$`, 'm'), 'var $1 = $2')
     input = input.replace(new RegExp(`^(${ARRAY}) (?:을|를) (?:만든다|정의한다|생성한다|선언한다)$`, 'm'), 'var $1 = []')
 
     //set
-    input = input.replace(new RegExp(`^(${VAR_ELE}) (?:을|를) (${FORMULA}) 으로 (?:정한다|만든다|둔다|바꾼다|설정한다)$`, 'm'), '$1 = $2')
-    input = input.replace(new RegExp(`^(${VAR_ELE}) (?:을|를) (${FORMULA}) 로 (?:정한다|만든다|둔다|바꾼다|설정한다)$`, 'm'), '$1 = $2')
+    input = input.replace(new RegExp(`^(${VAR_ELE}) (?:을|를) (${FORMULA}) 으로 (?:정한다|지정한다|만든다|둔다|바꾼다|설정한다)$`, 'm'), '$1 = $2')
+    input = input.replace(new RegExp(`^(${VAR_ELE}) (?:을|를) (${FORMULA}) 로 (?:정한다|지정한다|만든다|둔다|바꾼다|설정한다)$`, 'm'), '$1 = $2')
     input = input.replace(new RegExp(`^(${VAR_ELE}) (?:을|를) (${FORMULA}) (?:와|과) (?:같게 한다)$`, 'm'), '$1 = $2')
     //+=, ++,...
     input = input.replace(new RegExp(`^(${VAR_ELE}) 에(?:서|)(?:다가|)(?:다|) (${FORMULA}) (?:을|를) 더한다$`, 'm'), '$1+=$2')
     input = input.replace(new RegExp(`^(${VAR_ELE}) 에(?:서|)(?:다가|)(?:다|) (${FORMULA}) (?:을|를) 뺀다$`, 'm'), '$1-=$2')
     input = input.replace(new RegExp(`^(${VAR_ELE}) 에(?:서|)(?:다가|)(?:다|) (${FORMULA}) (?:을|를) 곱한다$`, 'm'), '$1*=$2')
-    input = input.replace(new RegExp(`^(${VAR_ELE}) 에(?:서|)(?:다가|)(?:다|) (${FORMULA}) (?:을|를|으로|로) 나눈다`, 'm'), '$1/=$2')
+    input = input.replace(new RegExp(`^(${VAR_ELE}) (?:을|를) (${FORMULA}) (?:을|를|으로|로) 나눈다`, 'm'), '$1/=$2')
     //출력
-    input = input.replace(new RegExp(`^(${TEXT}) 이라고 출력한다$`, 'm'), 'document.getElementById(\'out\').value += \'$1\'')
-    input = input.replace(new RegExp(`^(${TEXT}) 이라 출력한다$`, 'm'), 'document.getElementById(\'out\').value += \'$1\'')
-    input = input.replace(new RegExp(`^(${TEXT}) 라고 출력한다$`, 'm'), 'document.getElementById(\'out\').value += \'$1\'')
-    input = input.replace(new RegExp(`^(${TEXT}) 라 출력한다$`, 'm'), 'document.getElementById(\'out\').value += \'$1\'')
-    input = input.replace(new RegExp(`^(${TEXT}) 고 출력한다$`, 'm'), 'document.getElementById(\'out\').value += \'$1\'')
+    input = input.replace(new RegExp(`^(${TEXT}) (?:이|)(?:라고|하고|하며|하면서|라며|라면서|라|고) 출력한다$`, 'm'), 'document.getElementById(\'out\').value += \'$1\'')
+    input = input.replace(new RegExp(`^([0-9]+) (?:을|를) 출력한다$`, 'm'), 'document.getElementById(\'out\').value += $1..toString()')
     input = input.replace(new RegExp(`^(${FORMULA}) (?:을|를) 출력한다$`, 'm'), 'document.getElementById(\'out\').value += $1.toString()')
     input = input.replace(new RegExp(`^줄(?: |)을 바꾼다$`, 'm'), 'document.getElementById(\'out\').value += \'\\n\'')
     //입력
-    input = input.replace(new RegExp(`^(${VAR_ELE}) (?:을|를|에)(?:다|)(?:가|) (${TEXT}) (?:이|)(?:라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) 입력(?:을 |)받는다$`, 'm'), '$1 = prompt("$2", "")*1')
-    input = input.replace(new RegExp(`^(${TEXT}) (?:이|)(?:라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어) (${VAR_ELE}) (?:을|를|에)(?:다|)(?:가|) 입력(?:을 |)받는다$`, 'm'), '$2 = prompt("$1", "")*1')
+    input = input.replace(new RegExp(`^(${VAR_ELE}) (?:을|를|에)(?:다|)(?:가|) (${TEXT}) (?:이|)(?:라고|하고|하며|하면서|라며|라면서|라|고)(?:| 하면서| 물어보면서| 물어보며| 물어| 물으며) 입력(?:을 |)받는다$`, 'm'), '$1 = prompt("$2", "")*1')
+    input = input.replace(new RegExp(`^(${TEXT}) (?:이|)(?:라고|하고|하며|하면서|라며|라면서|라|고)(?:| 하면서| 물어보면서| 물어보며| 물어| 물으며) (${VAR_ELE}) (?:을|를|에)(?:다|)(?:가|) 입력(?:을 |)받는다$`, 'm'), '$2 = prompt("$1", "")*1')
     input = input.replace(new RegExp(`^(${VAR_ELE}) (?:을|를|에)(?:다|)(?:가|) 입력(?:을 |)받는다$`, 'm'), '$1 = prompt("입력 : ", "")*1')
 
     return input
+
   }
 
 
@@ -367,63 +357,82 @@ function convert() {
 
 
   //string
-  console.log(output)
+  // console.log(output)
   return output
 }
 var willcheckloop = true
 function run() {
+  var allowloop1
+  var allowloop2
+  var allowloop3
+  var allowloop4
+  var allowloop5
   clearTimeout(allowloop1)
   clearTimeout(allowloop2)
   clearTimeout(allowloop3)
   clearTimeout(allowloop4)
   clearTimeout(allowloop5)
-  document.getElementById('run').innerHTML = '실행!'
   if (!haserror) {
+    // console.log(`running willcheck:${willcheckloop}`)
+    document.getElementById('run').innerHTML = '실행 중...'
+    document.getElementById('run').disabled = true
     document.getElementById('out').value = ''
-    try {
-      if (willcheckloop) {
-        eval('var starttime = performance.now()\n' + convert().replace(/(while[^}]*)/g, '$1\nif(performance.now()-starttime>3000){throw new Error(\'timeout\');}'))
-      }
-      else {
-        eval(convert())
-      }
-    } catch (e) {
-      if (e.message.toString() == 'timeout') {
-        document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?' + '\n 5초 안에 다시 한 번 클릭해서 시간 제한 없이 실행'
-        willcheckloop = false
-        document.getElementById('run').innerHTML = '시간 제한 없이 실행! (5초 후 일반 실행으로 바뀜)'
-        var allowloop5 = setTimeout(() => {
-          document.getElementById('run').innerHTML = '실행!'
-          willcheckloop = true
-          document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?'
-        }, 5000);
-        var allowloop1 = setTimeout(() => {
-          document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?' + '\n 4초 안에 다시 한 번 클릭해서 시간 제한 없이 실행'
-          document.getElementById('run').innerHTML = '시간 제한 없이 실행! (4초 후 일반 실행으로 바뀜)'
-        }, 1000);
-        var allowloop2 = setTimeout(() => {
-          document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?' + '\n 3초 안에 다시 한 번 클릭해서 시간 제한 없이 실행'
-          document.getElementById('run').innerHTML = '시간 제한 없이 실행! (3초 후 일반 실행으로 바뀜)'
-        }, 2000);
-        var allowloop3 = setTimeout(() => {
-          document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?' + '\n 2초 안에 다시 한 번 클릭해서 시간 제한 없이 실행'
-          document.getElementById('run').innerHTML = '시간 제한 없이 실행! (2초 후 일반 실행으로 바뀜)'
-        }, 3000);
-        var allowloop4 = setTimeout(() => {
-          document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?' + '\n 1초 안에 다시 한 번 클릭해서 시간 제한 없이 실행'
-          document.getElementById('run').innerHTML = '시간 제한 없이 실행! (1초 후 일반 실행으로 바뀜)'
-        }, 4000);
-      }
-      else {
-        output = ''
-        function errreplacer(match, p1, offset, string) {
-          p1 = p1.split('_').slice(1)
-          return ('변수 ' + p1.map(x => String.fromCharCode(x)).join('').toString() + '가 정의되지 않았습니다!')
+    setTimeout(() => {
+      try {
+        if (willcheckloop) {
+          eval('\'use strict\'\nvar starttime = performance.now()\n' +
+          convert().replace(/(while[^}]*)/g, '$1\nif(performance.now()-starttime>3000){throw new Error(\'timeout\');}')
+          .replace(/(.*prompt.*)/mg,'var promptintime = performance.now()\n$1\nstarttime+=performance.now()-promptintime')
+          )
         }
-        output = e.message.toString().replace(/korvar(.+) is not defined/g, errreplacer)
-        document.getElementById('out').value = output
+        else {
+          eval(convert())
+        }
+        document.getElementById('run').innerHTML = '실행!'
+      } catch (e) {
+        document.getElementById('run').innerHTML = '실행!'
+        if (e.message.toString() == 'timeout') {
+          document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?' + '\n 5초 안에 다시 한 번 클릭해서 시간 제한 없이 실행'
+          willcheckloop = false
+          document.getElementById('run').innerHTML = '시간 제한 없이 실행! (5초 후 일반 실행으로 바뀜)'
+          allowloop1 = setTimeout(() => {
+            document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?' + '\n 4초 안에 다시 한 번 클릭해서 시간 제한 없이 실행'
+            document.getElementById('run').innerHTML = '시간 제한 없이 실행! (4초 후 일반 실행으로 바뀜)'
+          }, 1000);
+          allowloop2 = setTimeout(() => {
+            document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?' + '\n 3초 안에 다시 한 번 클릭해서 시간 제한 없이 실행'
+            document.getElementById('run').innerHTML = '시간 제한 없이 실행! (3초 후 일반 실행으로 바뀜)'
+          }, 2000);
+          allowloop3 = setTimeout(() => {
+            document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?' + '\n 2초 안에 다시 한 번 클릭해서 시간 제한 없이 실행'
+            document.getElementById('run').innerHTML = '시간 제한 없이 실행! (2초 후 일반 실행으로 바뀜)'
+          }, 3000);
+          allowloop4 = setTimeout(() => {
+            document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?' + '\n 1초 안에 다시 한 번 클릭해서 시간 제한 없이 실행'
+            document.getElementById('run').innerHTML = '시간 제한 없이 실행! (1초 후 일반 실행으로 바뀜)'
+          }, 4000);
+          allowloop5 = setTimeout(() => {
+            document.getElementById('run').innerHTML = '실행!'
+            document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?'
+            willcheckloop = true
+          }, 5000);
+        }
+        else {
+          let output = ''
+          function errvarreplacer(match, p1, p2, offset, string) {
+            p2 = p2.split('_').slice(1)
+            return ((p1=='var'?'변수 ':'배열 ') + p2.map(x => String.fromCharCode(x)).join('').toString() + '가 정의되지 않았습니다!')
+          }
+          output = e.message.toString().replace(/kor(var|arr)(.+) is not defined/g, errvarreplacer)
+          document.getElementById('out').value = output
+        }
       }
-    }
+      finally {
+        setTimeout(() => {
+          document.getElementById('run').disabled = false
+        }, 100);
+      }
+    }, 50);
   }
 }
 var errlines = []
@@ -431,6 +440,10 @@ var errlines = []
 function loaded() {
   $('#in').highlightWithinTextarea({
     highlight: [
+      {
+        highlight: [/ {2,}/g,/ +$/mg,/^ +/mg],
+        className: 'unexpectedspace'
+      },
       {
         highlight: [/변수(?= [가-힣]+ )/g, /숫자(?= [일이삼사오육칠팔구영십백천만억조]+ )/g, /배열(?= [가-힣]+ )/g, /(?<=[첫한두세네다섯여섯일곱여덟아홉열스물무서른마흔쉰예순일흔여든아흔영일이삼사오육칠팔구십백천만억조]+ (번|번째|째)) 원소/g],
         className: 'numvar'
@@ -448,9 +461,8 @@ function loaded() {
         className: 'ifwhile'
       },
       {
-        highlight: [/^[가-힣 !?,.]+ (?=((이|)라고) 출력)/mg,
-          /^((?!변수 [가-힣]+).)+ [가-힣 !?,.]* (?=(라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어))/mg,
-          /(?<=(을|를|에)[가-힣]* )[가-힣 !?,.]+ (?=(라며|라면서|라고 하며|라고 하면서|라고 물어보고|라고 물어보며|하고 물어보고|하고 물어보며|하고 물어|라고 물어))/mg],
+        highlight: [/^((?!변수 [가-힣]+).)+ [가-힣 !?,.]* (?=(?:이|)(?:라고|하고|하며|하면서|라며|라면서|라|고)(?:| 하면서| 물어보면서| 물어보며| 물어| 물으며))/mg,
+          /(?<=(을|를|에)[가-힣]* )[가-힣 !?,.]+ (?=(?:이|)(?:라고|하고|하며|하면서|라며|라면서|라|고)(?:| 하면서| 물어보면서| 물어보며| 물어| 물으며))/mg],
         className: 'string'
       },
       {
