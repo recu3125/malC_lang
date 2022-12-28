@@ -4,6 +4,7 @@ const VARIABLE = 'korvar[_0-9]+'
 const VAR_ELE = `${VARIABLE}|${ARRAYELEMENT}`
 const ARRAY = 'korarr[_0-9]+'
 const TEXT = '[가-힣 !?,.]+'
+const NUMBER = '[0-9]+'
 const CLOSES = '\\}*'
 function convert() {
   let input = document.getElementsByClassName("hwt-highlights hwt-content")[0].innertext || document.getElementsByClassName("hwt-highlights hwt-content")[0].textContent
@@ -25,7 +26,7 @@ function convert() {
 
   //숫자렌더
   function numreplacer(match, p1, offset, string) {
-    kornum = p1.split('')
+    let kornum = p1.split('')
     if (kornum == ['영']) {
       return '0'
     }
@@ -36,7 +37,7 @@ function convert() {
     let one = 0
     let thousand = 0
     let res = 0
-    for (i = 0; i < len; i++) {
+    for (let i = 0; i < len; i++) {
       if (kor2.indexOf(kornum[i]) != -1) {
         if (one == 0) thousand += Math.pow(10, kor2.indexOf(kornum[i]) + 1)
         else thousand += one * Math.pow(10, kor2.indexOf(kornum[i]) + 1)
@@ -60,10 +61,10 @@ function convert() {
 
   //배열원소렌더 함수
   function arrelementreplacer(match, arrayname, index, offset, string) {
-    korcnt1 = ['한', '두', '세', '네', '다섯', '여섯', '일곱', '여덟', '아홉']
-    korcnt2 = ['열', '스물', '서른', '마흔', '쉰', '예순', '일흔', '여든', '아흔']
+    let korcnt1 = ['한', '두', '세', '네', '다섯', '여섯', '일곱', '여덟', '아홉']
+    let korcnt2 = ['열', '스물', '서른', '마흔', '쉰', '예순', '일흔', '여든', '아흔']
     let countres = 0
-    for (i = 0; i < korcnt1.length; i++) {
+    for (let i = 0; i < korcnt1.length; i++) {
       if (index.endsWith(korcnt1[i])) {
         countres += i + 1
         index = index.replace(korcnt1[i], '')
@@ -73,7 +74,7 @@ function convert() {
       countres += 1
       index = index.replace('첫', '')
     }
-    for (i = 0; i < korcnt2.length; i++) {
+    for (let i = 0; i < korcnt2.length; i++) {
       if (index.endsWith(korcnt2[i])) {
         countres += (i + 1) * 10
         index = index.replace(korcnt2[i], '')
@@ -94,7 +95,7 @@ function convert() {
     let one = 0
     let thousand = 0
     let res = 0
-    for (i = 0; i < len; i++) {
+    for (let i = 0; i < len; i++) {
       if (kor2.indexOf(kornum[i]) != -1) {
         if (one == 0) thousand += Math.pow(10, kor2.indexOf(kornum[i]) + 1)
         else thousand += one * Math.pow(10, kor2.indexOf(kornum[i]) + 1)
@@ -115,7 +116,6 @@ function convert() {
   }
 
   //연산식렌더 + 배열원소렌더 다될때까지
-  // console.log(input)
   let preinput
   while (input != preinput) {
     preinput = input
@@ -228,7 +228,7 @@ function convert() {
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) (?:을|를) (${FORMULA}) (?:을|를|으로|로) 나눈다`, 'm'), '\n$2/=$3} $1')
     //출력
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${TEXT}) (?:이|)(?:라고|하고|하며|하면서|라며|라면서|라|고) 출력한다$`, 'm'), '\ndocument.getElementById(\'out\').value += \'$2\'} $1')
-    input = input.replace(new RegExp(`\}(${CLOSES})\n([0-9]+) (?:을|를) 출력한다$`, 'm'), '\ndocument.getElementById(\'out\').value += $2..toString()} $1')
+    input = input.replace(new RegExp(`\}(${CLOSES})\n(${NUMBER}) (?:을|를) 출력한다$`, 'm'), '\ndocument.getElementById(\'out\').value += $2..toString()} $1')
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${FORMULA}) (?:을|를) 출력한다$`, 'm'), '\ndocument.getElementById(\'out\').value += $2.toString()} $1')
     input = input.replace(new RegExp(`\}(${CLOSES})\n줄(?: |)을 바꾼다$`, 'm'), '\ndocument.getElementById(\'out\').value += \'\\n\'} $1')
     //입력
@@ -259,7 +259,7 @@ function convert() {
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${VAR_ELE}) (?:을|를) (${FORMULA}) (?:을|를|으로|로) 나누고`, 'm'), '\n$2/=$3}$1')
     //출력
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${TEXT}) (?:이|)(?:라고|하고|하며|하면서|라며|라면서|라|고) 출력하고$`, 'm'), '\ndocument.getElementById(\'out\').value += \'$2\'}$1')
-    input = input.replace(new RegExp(`\}(${CLOSES})\n([0-9]+) (?:을|를) 출력하고$`, 'm'), '\ndocument.getElementById(\'out\').value += $2..toString()}$1')
+    input = input.replace(new RegExp(`\}(${CLOSES})\n(${NUMBER}) (?:을|를) 출력하고$`, 'm'), '\ndocument.getElementById(\'out\').value += $2..toString()}$1')
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${FORMULA}) (?:을|를) 출력하고$`, 'm'), '\ndocument.getElementById(\'out\').value += $2.toString()}$1')
     input = input.replace(new RegExp(`\}(${CLOSES})\n줄(?: |)을 바꾸고$`, 'm'), '\ndocument.getElementById(\'out\').value += \'\\n\'}$1')
     //입력
@@ -313,9 +313,6 @@ function convert() {
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${FORMULA}) (?:이|가) (${FORMULA}) 보다 (?:더 |)작지 않은 동안$`, 'm'), '\nwhile ($2 >= $3){}}$1')
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${FORMULA}) (?:이|가) (${FORMULA}) 보다 (?:더 |)크거나 같은 동안$`, 'm'), '\nwhile ($2 >= $3){}}$1')
     input = input.replace(new RegExp(`\}(${CLOSES})\n(${FORMULA}) (?:이|가) (${FORMULA}) 보다 (?:더 |)작거나 같은 동안$`, 'm'), '\nwhile ($2 <= $3){}}$1')
-    // console.log('\n')
-    // console.log(input)
-    // console.log(preinput)
 
 
 
@@ -340,7 +337,7 @@ function convert() {
     input = input.replace(new RegExp(`^(${VAR_ELE}) (?:을|를) (${FORMULA}) (?:을|를|으로|로) 나눈다`, 'm'), '$1/=$2')
     //출력
     input = input.replace(new RegExp(`^(${TEXT}) (?:이|)(?:라고|하고|하며|하면서|라며|라면서|라|고) 출력한다$`, 'm'), 'document.getElementById(\'out\').value += \'$1\'')
-    input = input.replace(new RegExp(`^([0-9]+) (?:을|를) 출력한다$`, 'm'), 'document.getElementById(\'out\').value += $1..toString()')
+    input = input.replace(new RegExp(`^(${NUMBER}) (?:을|를) 출력한다$`, 'm'), 'document.getElementById(\'out\').value += $1..toString()')
     input = input.replace(new RegExp(`^(${FORMULA}) (?:을|를) 출력한다$`, 'm'), 'document.getElementById(\'out\').value += $1.toString()')
     input = input.replace(new RegExp(`^줄(?: |)을 바꾼다$`, 'm'), 'document.getElementById(\'out\').value += \'\\n\'')
     //입력
@@ -356,17 +353,16 @@ function convert() {
 
 
 
-  //string
   // console.log(output)
   return output
 }
-var willcheckloop = true
+let willcheckloop = true
 function run() {
-  var allowloop1
-  var allowloop2
-  var allowloop3
-  var allowloop4
-  var allowloop5
+  let allowloop1
+  let allowloop2
+  let allowloop3
+  let allowloop4
+  let allowloop5
   clearTimeout(allowloop1)
   clearTimeout(allowloop2)
   clearTimeout(allowloop3)
@@ -381,8 +377,8 @@ function run() {
       try {
         if (willcheckloop) {
           eval('\'use strict\'\nvar starttime = performance.now()\n' +
-          convert().replace(/(while[^}]*)/g, '$1\nif(performance.now()-starttime>3000){throw new Error(\'timeout\');}')
-          .replace(/(.*prompt.*)/mg,'var promptintime = performance.now()\n$1\nstarttime+=performance.now()-promptintime')
+            convert().replace(/(while[^}]*)/g, '$1\nif(performance.now()-starttime>3000){throw new Error(\'timeout\');}')
+              .replace(/(.*prompt.*)/mg, 'var promptintime = performance.now()\n$1\nstarttime+=performance.now()-promptintime')
           )
         }
         else {
@@ -398,30 +394,30 @@ function run() {
           allowloop1 = setTimeout(() => {
             document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?' + '\n 4초 안에 다시 한 번 클릭해서 시간 제한 없이 실행'
             document.getElementById('run').innerHTML = '시간 제한 없이 실행! (4초 후 일반 실행으로 바뀜)'
-          }, 1000);
+          }, 1000)
           allowloop2 = setTimeout(() => {
             document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?' + '\n 3초 안에 다시 한 번 클릭해서 시간 제한 없이 실행'
             document.getElementById('run').innerHTML = '시간 제한 없이 실행! (3초 후 일반 실행으로 바뀜)'
-          }, 2000);
+          }, 2000)
           allowloop3 = setTimeout(() => {
             document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?' + '\n 2초 안에 다시 한 번 클릭해서 시간 제한 없이 실행'
             document.getElementById('run').innerHTML = '시간 제한 없이 실행! (2초 후 일반 실행으로 바뀜)'
-          }, 3000);
+          }, 3000)
           allowloop4 = setTimeout(() => {
             document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?' + '\n 1초 안에 다시 한 번 클릭해서 시간 제한 없이 실행'
             document.getElementById('run').innerHTML = '시간 제한 없이 실행! (1초 후 일반 실행으로 바뀜)'
-          }, 4000);
+          }, 4000)
           allowloop5 = setTimeout(() => {
             document.getElementById('run').innerHTML = '실행!'
             document.getElementById('out').value = '3초 이상 실행되길래 일단 멈췄어요! 의도한 작동이 맞나요?'
             willcheckloop = true
-          }, 5000);
+          }, 5000)
         }
         else {
           let output = ''
           function errvarreplacer(match, p1, p2, offset, string) {
             p2 = p2.split('_').slice(1)
-            return ((p1=='var'?'변수 ':'배열 ') + p2.map(x => String.fromCharCode(x)).join('').toString() + '가 정의되지 않았습니다!')
+            return ((p1 == 'var' ? '변수 ' : '배열 ') + p2.map(x => String.fromCharCode(x)).join('').toString() + '가 정의되지 않았습니다!')
           }
           output = e.message.toString().replace(/kor(var|arr)(.+) is not defined/g, errvarreplacer)
           document.getElementById('out').value = output
@@ -430,18 +426,17 @@ function run() {
       finally {
         setTimeout(() => {
           document.getElementById('run').disabled = false
-        }, 100);
+        }, 100)
       }
-    }, 50);
+    }, 50)
   }
 }
-var errlines = []
-// var noerrlines = []
+let errlines = []
 function loaded() {
   $('#in').highlightWithinTextarea({
     highlight: [
       {
-        highlight: [/ {2,}/g,/ +$/mg,/^ +/mg],
+        highlight: [/ {2,}/g, / +$/mg, /^ +/mg],
         className: 'unexpectedspace'
       },
       {
@@ -474,21 +469,21 @@ function loaded() {
         className: 'base'
       }
     ]
-  });
+  })
 
 }
-var haserror = false
+let haserror = false
 function livecheck() {
-  $('#in').highlightWithinTextarea('update');
+  $('#in').highlightWithinTextarea('update')
   document.getElementById('run').innerHTML = '실행!'
   document.getElementById('run').style.color = '#00b57e'
   document.getElementById('run').style.outline = '2px dotted #00b57e'
   haserror = false
   let code = convert()
   let input = document.getElementsByClassName("hwt-highlights hwt-content")[0].innertext || document.getElementsByClassName("hwt-highlights hwt-content")[0].textContent
-  byline2 = input.split('\n')
+  let byline2 = input.split('\n')
   errlines = []
-  for (i = 0; i < byline2.length; i++) {
+  for (let i = 0; i < byline2.length; i++) {
     if (/[^ 가-힣\?!\.,\n]/.test(byline2[i])) {
       if (i == 0) {
         errlines.push("A" + byline2[i])
@@ -502,8 +497,8 @@ function livecheck() {
       haserror = true
     }
   }
-  byline = code.split('\n')
-  for (i = 0; i < byline.length; i++) {
+  let byline = code.split('\n')
+  for (let i = 0; i < byline.length; i++) {
     if (/[가-힣ㄱ-ㅎ]/.test(byline[i].replace(/document.*'/g, '').replace(/prompt.*\)/g, ''))) {
       if (i == 0) {
         errlines.push("A" + byline2[i])
@@ -519,43 +514,8 @@ function livecheck() {
   }
   errlines = [...new Set(errlines)]
   errlines = errlines.map(x => new RegExp('(?<=' + x.split('A')[0].replace(/[|\\{}()[\]^$+*?.]/g, '\\$&') + ')^' + x.split('A')[1].replace(/[|\\{}()[\]^$+*?.]/g, '\\$&') + '$', 'mg'))
-  $('#in').highlightWithinTextarea('update');
+  $('#in').highlightWithinTextarea('update')
 }
 function errlinecheck() {
   return errlines
 }
-// function noerrlinecheck() {
-//   let code = convert()
-//   let input = document.getElementsByClassName("hwt-highlights hwt-content")[0].innertext || document.getElementsByClassName("hwt-highlights hwt-content")[0].textContent
-//   byline2 = input.split('\n')
-//   noerrlines = JSON.parse(JSON.stringify(byline2))
-//   for (i = 0; i < byline2.length; i++) {
-//     if (/[^ 가-힣\?!\.,\n]/.test(byline2[i])) {
-//       noerrlines = noerrlines.filter(x => x != byline2[i])
-//     }
-//   }
-//   byline = code.split('\n')
-//   for (i = 0; i < byline.length; i++) {
-//     if (/[가-힣ㄱ-ㅎ]/.test(byline[i].replace(/document.*'/g, '').replace(/prompt.*\)/g, ''))) {
-//       noerrlines = noerrlines.filter(x => x != byline2[i])
-//     }
-//   }
-//   noerrlines = noerrlines.filter(x => x != '')
-//   return noerrlines.map(x => new RegExp('^' + x.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&') + '$', 'mg'))
-// }
-
-// let prev = ''
-// function editor() {
-//   let now = document.getElementById('in').value
-//   len = now.length
-//   prevlen = prev.length
-//   if (len < prevlen || len > prevlen+1) {
-//     return
-//   }
-//   for (i = 0; i < prevlen; i++) {
-//     if(now[nowlen-i-1]!=prev[prevlen-i-1]){
-//       //달라진부분
-//     }
-//   }
-//     prev = document.getElementById('in').value
-// }
